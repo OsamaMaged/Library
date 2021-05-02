@@ -127,7 +127,7 @@ public class bookdetails extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    bookdetails b = new bookdetails();
+    searchbook b = new searchbook();
         b.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
