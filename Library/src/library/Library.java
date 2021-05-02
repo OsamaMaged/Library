@@ -12,17 +12,21 @@ import java.sql.*;
  * @author osama
  */
 public class Library {
+    static Connection myConn;
 
+    public Library(Connection conn) {
+        conn = this.myConn;
+    }
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         try {
    //connection to database
-   Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+    myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
    
    //create statement 
-   Statement myStmt = myConn.createStatement();
+    Statement myStmt = myConn.createStatement();
    
    //execute sql query
    ResultSet myRs = myStmt.executeQuery("select * from book");
@@ -38,5 +42,6 @@ public class Library {
     Main_frame m = new Main_frame();
     m.show();
     }
+  
     
 }
