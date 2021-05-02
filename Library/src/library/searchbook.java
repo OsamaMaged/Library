@@ -37,8 +37,18 @@ public class searchbook extends javax.swing.JFrame {
         jLabel1.setText("Books result");
 
         result.setText("result");
+        result.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resultActionPerformed(evt);
+            }
+        });
 
         back.setText("back");
+        back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -66,6 +76,17 @@ public class searchbook extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
+        book_management b = new book_management();
+        b.setVisible(true);
+        this.dispose();    }//GEN-LAST:event_backActionPerformed
+
+    private void resultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultActionPerformed
+        bookdetails b = new bookdetails();
+        b.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_resultActionPerformed
 
     /**
      * @param args the command line arguments

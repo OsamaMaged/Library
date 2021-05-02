@@ -5,6 +5,9 @@
  */
 package library;
 
+import java.awt.Label;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author osama
@@ -51,12 +54,27 @@ public class bookdetails extends javax.swing.JFrame {
         jTextField5.setToolTipText("Book Quantity");
 
         update.setText("Update");
+        update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Back");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jTextField1.setToolTipText("Book name");
 
         delete.setText("Delete");
+        delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,6 +125,29 @@ public class bookdetails extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    bookdetails b = new bookdetails();
+        b.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+    updatedetails b = new updatedetails();
+        b.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_updateActionPerformed
+
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        int result = JOptionPane.showConfirmDialog(this,"Do you want to delete this book?", "Delete book",
+               JOptionPane.YES_NO_OPTION,
+               JOptionPane.QUESTION_MESSAGE);
+            if(result == JOptionPane.YES_OPTION){
+                this.dispose();
+            }else if (result == JOptionPane.NO_OPTION){
+                
+            }
+    }//GEN-LAST:event_deleteActionPerformed
 
     /**
      * @param args the command line arguments
