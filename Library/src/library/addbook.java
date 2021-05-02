@@ -125,8 +125,10 @@ public class addbook extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-JOptionPane.showMessageDialog(this, "Book Added",
-                               "Book", JOptionPane.INFORMATION_MESSAGE);    }//GEN-LAST:event_jButton1ActionPerformed
+  JOptionPane.showMessageDialog(this, "Book Added",
+                               "Book", JOptionPane.INFORMATION_MESSAGE  );
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

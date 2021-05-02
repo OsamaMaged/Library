@@ -5,6 +5,8 @@
  */
 package library;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author osama
@@ -44,6 +46,11 @@ public class updatedetails extends javax.swing.JFrame {
         jTextField1.setToolTipText("Book name");
 
         cancel.setText("cancel");
+        cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
         jLabel1.setText("Book details");
@@ -57,6 +64,11 @@ public class updatedetails extends javax.swing.JFrame {
         jTextField5.setToolTipText("Book Quantity");
 
         save.setText("Save");
+        save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,6 +119,14 @@ public class updatedetails extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
+    this.dispose();
+    }//GEN-LAST:event_cancelActionPerformed
+
+    private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
+JOptionPane.showMessageDialog(this, "Book saved","Book", JOptionPane.INFORMATION_MESSAGE  );
+    }//GEN-LAST:event_saveActionPerformed
 
     /**
      * @param args the command line arguments

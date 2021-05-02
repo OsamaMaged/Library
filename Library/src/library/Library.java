@@ -15,8 +15,8 @@ public class Library {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-    book_management book = new book_management();
-    book.show();
+    Main_frame m = new Main_frame();
+    m.show();
     }
     
 }
