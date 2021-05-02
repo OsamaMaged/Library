@@ -14,6 +14,7 @@ public class book_management extends javax.swing.JFrame {
     /**
      * Creates new form book_management
      */
+          
     public book_management() {
         initComponents();
     }
@@ -38,6 +39,11 @@ public class book_management extends javax.swing.JFrame {
         jLabel1.setText("Book Management");
 
         jButton1.setText("Add book");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Search book");
 
@@ -76,6 +82,9 @@ public class book_management extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
