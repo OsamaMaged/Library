@@ -5,6 +5,8 @@
  */
 package library;
 
+import java.sql.*;
+
 /**
  *
  * @author osama
@@ -15,6 +17,24 @@ public class Library {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        try {
+   //connection to database
+   Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+   
+   //create statement 
+   Statement myStmt = myConn.createStatement();
+   
+   //execute sql query
+   ResultSet myRs = myStmt.executeQuery("select * from book");
+   
+   //results set
+   while (myRs.next()) {
+    System.out.println(myRs.getString("id")+ " , "+myRs.getString("name"));
+   }
+  }
+  catch (Exception exc) {
+   exc.printStackTrace();
+  }
     Main_frame m = new Main_frame();
     m.show();
     }
