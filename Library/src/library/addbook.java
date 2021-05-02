@@ -15,7 +15,8 @@ import java.util.logging.Logger;
  */
 public class addbook extends javax.swing.JFrame {
     Connection conn;
-    Library l = new Library(conn);
+    Statement st;
+    Library lib = new Library(conn,st);
 
    /**
      * Creates new form addbook
@@ -129,24 +130,22 @@ public class addbook extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
         String name = jTextField1.getText();
         String desc = jTextField2.getText();
         String author = jTextField3.getText();
         String type = jTextField4.getText();
         String s = jTextField5.getText();
-        if(!s.equals(""))
+        if(!s.isEmpty())
         {int stock = Integer.parseInt(s);}
-        if(name.equals("")||desc.equals("")||author.equals("")||type.equals("")|| s.equals(""))
+        if(name.isEmpty()||desc.isEmpty()||author.isEmpty()||type.isEmpty()|| s.isEmpty())
         {
             JOptionPane.showMessageDialog(this, "Please Enter all values",
                                "Book", JOptionPane.WARNING_MESSAGE  );
         }else{
             try {
-                Statement st = conn.createStatement();
-                l.getStmt().executeUpdate("INSERT INTO book (id,name,description,author_name,type,stock)"+" VALUES (NULL,name, desc, author, type, stock)");
+                st.executeUpdate("INSERT INTO book"+" VALUES (NULL,name, desc, author, type, stock)");
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this, "Failed to insert",
-                               "Book", JOptionPane.WARNING_MESSAGE  );
                 Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
             }
         JOptionPane.showMessageDialog(this, "Book Added",

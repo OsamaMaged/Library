@@ -12,10 +12,11 @@ import java.sql.*;
  * @author osama
  */
 public class Library {
-    static Connection myConn;
-
-    public Library(Connection conn) {
+    public static Connection myConn;
+    Statement myStmt;
+    public Library(Connection conn,  Statement st) {
         conn = this.myConn;
+        st = this.myStmt;
     }
     /**
      * @param args the command line arguments
