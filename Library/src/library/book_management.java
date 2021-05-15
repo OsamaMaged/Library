@@ -20,10 +20,10 @@ import static library.Main_frame.myConn;
  * @author osama
  */
 public class book_management extends javax.swing.JFrame {
-
+public ArrayList<String> m;
     /**
      * Creates new form book_management
-     */
+     */public book_management(ArrayList<String> s) {s=this.m;}
           
     public book_management() {
         initComponents();
@@ -127,7 +127,7 @@ public class book_management extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
     searchbook b = new searchbook();
-ArrayList<String> m=new ArrayList<String>();
+ m=new ArrayList<String>();
         boolean flag=true;
         try {
             String Result =jTextField1.getText();
@@ -140,12 +140,11 @@ ArrayList<String> m=new ArrayList<String>();
                 flag=false;
     System.out.println(myR.getString("id")+ " , "+myR.getString("name"));
        b.Button.setText(myR.getString("name"));
-       m.add(myR.getString("name"));
-            m.add(myR.getString("description"));
-            m.add(myR.getString("author"));
-            m.add(myR.getString("type"));
-            m.add(myR.getString("stock"));
-       bookdetails bd = new bookdetails(m);
+       m.add(0,myR.getString("name"));
+            m.add(1,myR.getString("description"));
+            m.add(2,myR.getString("author"));
+            m.add(3,myR.getString("type"));
+            m.add(4,myR.getString("stock"));
       
        
 
