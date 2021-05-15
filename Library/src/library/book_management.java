@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -126,21 +127,49 @@ public class book_management extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
     searchbook b = new searchbook();
+ArrayList<String> m=new ArrayList<String>();
+        boolean flag=true;
         try {
             String Result =jTextField1.getText();
             if(!Result.isEmpty())
             {
             myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
             Statement myS = myConn.createStatement();
-            ResultSet myR = myS.executeQuery("SELECT * FROM book WHERE name ="+Result);
-        
-//            b.Button.setText(myR.getString("name"));
+            ResultSet myR = myS.executeQuery("select * from book where name like '"+Result+"'");
+            while (myR.next()) {
+                flag=false;
+    System.out.println(myR.getString("id")+ " , "+myR.getString("name"));
+       b.Button.setText(myR.getString("name"));
+       m.add(myR.getString("name"));
+            m.add(myR.getString("description"));
+            m.add(myR.getString("author"));
+            m.add(myR.getString("type"));
+            m.add(myR.getString("stock"));
+       bookdetails bd = new bookdetails(m);
+      
+       
+
+   }
+        myConn.close();
+        if(flag)
+        {JOptionPane.showMessageDialog(this, "This book doesn't exist",
+                               "Book", JOptionPane.WARNING_MESSAGE  );}
+        else{
         b.setVisible(true);
         this.dispose();
+        }
             }else  JOptionPane.showMessageDialog(this, "Enter the Book name",
                                "Book", JOptionPane.WARNING_MESSAGE  );
         } catch (Exception ex) {
             Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "This book doesn't exist",
+                               "Book", JOptionPane.WARNING_MESSAGE  );
+            
+        try {
+            myConn.close();
+        } catch (SQLException ex1) {
+            Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex1);
+        }
         }
    
    //create statement 
