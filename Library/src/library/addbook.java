@@ -9,14 +9,16 @@ import javax.swing.JOptionPane;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static library.Main_frame.myConn;
 /**
  *
  * @author osama
  */
 public class addbook extends javax.swing.JFrame {
-    Connection conn;
-    Statement st;
-    Library lib = new Library(conn,st);
+
+    //Statement mySt = conn.createStatement();
+   // Library lib = new Library(conn,st);
+
 
    /**
      * Creates new form addbook
@@ -137,20 +139,35 @@ public class addbook extends javax.swing.JFrame {
         String type = jTextField4.getText();
         String s = jTextField5.getText();
         if(!s.isEmpty())
-        {int stock = Integer.parseInt(s);}
+        {try {int stock = Integer.parseInt(s);}catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Please Enter an integer value",
+                               "Book", JOptionPane.WARNING_MESSAGE  );
+            return;
+        }}
         if(name.isEmpty()||desc.isEmpty()||author.isEmpty()||type.isEmpty()|| s.isEmpty())
         {
             JOptionPane.showMessageDialog(this, "Please Enter all values",
                                "Book", JOptionPane.WARNING_MESSAGE  );
         }else{
             try {
-                st.executeUpdate("INSERT INTO book"+" VALUES (NULL,name, desc, author, type, stock)");
-            } catch (SQLException ex) {
+                 Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+                 Statement myStat = Conn.createStatement();
+                myStat.executeUpdate("INSERT INTO book"+" VALUES (NULL,'"+name+"','"+ desc+"','"+ author+"','"+type+"',"+ s+")");
+                jTextField1.setText("");
+                jTextField2.setText("");
+                jTextField3.setText("");
+                jTextField4.setText("");
+                jTextField5.setText("");
+                Conn.close();
+            } catch (Exception ex) {
                 Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Error",
+                               "Book", JOptionPane.WARNING_MESSAGE  );
             }
         JOptionPane.showMessageDialog(this, "Book Added",
                                "Book", JOptionPane.INFORMATION_MESSAGE  );
         }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

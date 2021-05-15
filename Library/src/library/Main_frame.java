@@ -5,17 +5,22 @@
  */
 package library;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 /**
  *
  * @author Ashrakat
  */
 public class Main_frame extends javax.swing.JFrame {
-
-    /**
-     * Creates new form Main_frame
-     */
-    public Main_frame() {
-        initComponents();
+   public static Connection myConn;
+   Statement myStmt;
+    public Main_frame(){initComponents();}
+    public Main_frame(Connection conn,  Statement st) {
+        conn = this.myConn;
+        st = this.myStmt;
     }
 
     /**
@@ -126,7 +131,25 @@ public class Main_frame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Main_frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+try {
+   //connection to database
+    myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+   
+   //create statement 
+    Statement myStmt = myConn.createStatement();
+   
+   //execute sql query
+   ResultSet myRs = myStmt.executeQuery("select * from book");
+   
+   //results set
+   while (myRs.next()) {
+    System.out.println(myRs.getString("id")+ " , "+myRs.getString("name"));
+   }
+   myConn.close();
+}
+  catch (Exception exc) {
+   exc.printStackTrace();
+  }
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

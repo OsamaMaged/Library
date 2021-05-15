@@ -28,7 +28,7 @@ public class searchbook extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        result = new javax.swing.JButton();
+        Button = new javax.swing.JButton();
         back = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -36,10 +36,10 @@ public class searchbook extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
         jLabel1.setText("Books result");
 
-        result.setText("result");
-        result.addActionListener(new java.awt.event.ActionListener() {
+        Button.setText("result");
+        Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                resultActionPerformed(evt);
+                ButtonActionPerformed(evt);
             }
         });
 
@@ -59,7 +59,7 @@ public class searchbook extends javax.swing.JFrame {
                 .addGap(47, 47, 47)
                 .addComponent(jLabel1)
                 .addContainerGap(147, Short.MAX_VALUE))
-            .addComponent(result, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -70,7 +70,7 @@ public class searchbook extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addComponent(back))
                 .addGap(30, 30, 30)
-                .addComponent(result)
+                .addComponent(Button)
                 .addContainerGap(203, Short.MAX_VALUE))
         );
 
@@ -82,11 +82,11 @@ public class searchbook extends javax.swing.JFrame {
         b.setVisible(true);
         this.dispose();    }//GEN-LAST:event_backActionPerformed
 
-    private void resultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultActionPerformed
+    private void ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonActionPerformed
         bookdetails b = new bookdetails();
         b.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_resultActionPerformed
+    }//GEN-LAST:event_ButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -124,8 +124,8 @@ public class searchbook extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton Button;
     private javax.swing.JButton back;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JButton result;
     // End of variables declaration//GEN-END:variables
 }
