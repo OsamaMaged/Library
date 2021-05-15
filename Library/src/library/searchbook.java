@@ -5,17 +5,29 @@
  */
 package library;
 
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author osama
  */
 public class searchbook extends javax.swing.JFrame {
-
+ArrayList<String>s =new ArrayList<String>();
     /**
      * Creates new form searchbook
      */
-    public searchbook() {
-        initComponents();
+ public searchbook(ArrayList<String>m) {
+          initComponents();      
+        s.addAll(m);
+    Button.setText(s.get(0));
+          System.out.println("Search "+ s.get(0)+" "+s.get(1)+" "+s.get(2)+" "+s.get(3)+" "+s.get(4));
+
+        
+    }
+
+    private searchbook() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -80,10 +92,11 @@ public class searchbook extends javax.swing.JFrame {
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         book_management b = new book_management();
         b.setVisible(true);
+        
         this.dispose();    }//GEN-LAST:event_backActionPerformed
 
     private void ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonActionPerformed
-        bookdetails b = new bookdetails();
+        bookdetails b = new bookdetails(s);
         b.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_ButtonActionPerformed

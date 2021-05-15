@@ -134,8 +134,8 @@ JOptionPane.showMessageDialog(this, "Book saved","Book", JOptionPane.INFORMATION
     }//GEN-LAST:event_saveActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-bookdetails b = new bookdetails();
-b.setVisible(true);
+//bookdetails b = new bookdetails();
+//b.setVisible(true);
 this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 

@@ -23,7 +23,8 @@ public class book_management extends javax.swing.JFrame {
 public ArrayList<String> m;
     /**
      * Creates new form book_management
-     */public book_management(ArrayList<String> s) {s=this.m;}
+     */
+//public book_management(ArrayList<String> s) {s=this.m;}
           
     public book_management() {
         initComponents();
@@ -126,7 +127,6 @@ public ArrayList<String> m;
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    searchbook b = new searchbook();
  m=new ArrayList<String>();
         boolean flag=true;
         try {
@@ -139,14 +139,16 @@ public ArrayList<String> m;
             while (myR.next()) {
                 flag=false;
     System.out.println(myR.getString("id")+ " , "+myR.getString("name"));
-       b.Button.setText(myR.getString("name"));
+       
        m.add(0,myR.getString("name"));
             m.add(1,myR.getString("description"));
             m.add(2,myR.getString("author"));
             m.add(3,myR.getString("type"));
             m.add(4,myR.getString("stock"));
-      
-       
+            m.add(5,myR.getString("id"));
+      ArrayList<String>s = new ArrayList<String>();
+      System.out.println(m.get(0)+" "+m.get(1)+" "+m.get(2)+" "+m.get(3)+" "+m.get(4));
+
 
    }
         myConn.close();
@@ -154,6 +156,7 @@ public ArrayList<String> m;
         {JOptionPane.showMessageDialog(this, "This book doesn't exist",
                                "Book", JOptionPane.WARNING_MESSAGE  );}
         else{
+        searchbook b = new searchbook(m);
         b.setVisible(true);
         this.dispose();
         }
