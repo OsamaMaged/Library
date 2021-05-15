@@ -25,13 +25,17 @@ public class Main_frame extends javax.swing.JFrame {
     Statement myStmt = myConn.createStatement();
    
    //execute sql query
-      String query ="CREATE TABLE book (id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,"
+    
+      String query2 ="CREATE TABLE userType (TypeId INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,"
+              + " type VARCHAR(255) NOT NULL)";
+      String query3 ="CREATE TABLE user (id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,"
               + " name VARCHAR(255) NOT NULL, "
-              + "description VARCHAR(255) NOT NULL,"
-              + "author VARCHAR(255),"
-              + "type VARCHAR(255),"
-              + "stock INT(11) )";
-   myStmt.execute(query);
+              + "email VARCHAR(255) NOT NULL,"
+              + "userTypeID INT(11) FOREIGN KEY REFERENCES userType (TypeId) )";
+  // myStmt.execute(query1);
+   myStmt.execute(query2);
+   myStmt.execute(query3);
+
     System.out.println("table Created Successfully");
    myConn.close();
 }
@@ -116,6 +120,9 @@ public class Main_frame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        users_main m = new users_main();
+        m.setVisible(true);
+        this.dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
