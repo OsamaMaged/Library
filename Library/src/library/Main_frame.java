@@ -17,7 +17,27 @@ import java.sql.Statement;
 public class Main_frame extends javax.swing.JFrame {
    public static Connection myConn;
    Statement myStmt;
-    public Main_frame(){initComponents();}
+    public Main_frame(){initComponents();try {
+   //connection to database
+    myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+   
+   //create statement 
+    Statement myStmt = myConn.createStatement();
+   
+   //execute sql query
+      String query ="CREATE TABLE book (id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,"
+              + " name VARCHAR(255) NOT NULL, "
+              + "description VARCHAR(255) NOT NULL,"
+              + "author VARCHAR(255),"
+              + "type VARCHAR(255),"
+              + "stock INT(11) )";
+   myStmt.execute(query);
+    System.out.println("table Created Successfully");
+   myConn.close();
+}
+  catch (Exception exc) {
+   exc.printStackTrace();
+  }}
     public Main_frame(Connection conn,  Statement st) {
         conn = this.myConn;
         st = this.myStmt;
@@ -131,25 +151,7 @@ public class Main_frame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Main_frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-try {
-   //connection to database
-    myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-   
-   //create statement 
-    Statement myStmt = myConn.createStatement();
-   
-   //execute sql query
-   ResultSet myRs = myStmt.executeQuery("select * from book");
-   
-   //results set
-   while (myRs.next()) {
-    System.out.println(myRs.getString("id")+ " , "+myRs.getString("name"));
-   }
-   myConn.close();
-}
-  catch (Exception exc) {
-   exc.printStackTrace();
-  }
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

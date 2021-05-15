@@ -29,11 +29,11 @@ public ArrayList<String> s=new ArrayList<String>();
     public bookdetails(ArrayList<String>m) {
         initComponents();
          s.addAll(m);
-         jTextField1.setText(s.get(0));
-         jTextField2.setText(s.get(1));
-         jTextField3.setText(s.get(2));
-         jTextField4.setText(s.get(3));
-         jTextField5.setText(s.get(4));
+         jTextField1.setText(s.get(0));jTextField1.setEditable(false);
+         jTextField2.setText(s.get(1));jTextField2.setEditable(false);
+         jTextField3.setText(s.get(2));jTextField3.setEditable(false);
+         jTextField4.setText(s.get(3));jTextField4.setEditable(false);
+         jTextField5.setText(s.get(4));jTextField5.setEditable(false);
   
     
     }
@@ -226,6 +226,8 @@ public ArrayList<String> s=new ArrayList<String>();
                 Statement myS = myConn.createStatement();
                 String SQL= "delete from book where id = "+s.get(5);
                 myS.execute(SQL);
+                myConn.close();
+
                 this.dispose();
             } catch (SQLException ex) {
                 Logger.getLogger(bookdetails.class.getName()).log(Level.SEVERE, null, ex);

@@ -5,6 +5,11 @@
  */
 package library;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -130,12 +135,45 @@ public class updatedetails extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
-JOptionPane.showMessageDialog(this, "Book saved","Book", JOptionPane.INFORMATION_MESSAGE  );
+        String name = jTextField1.getText();
+        String desc = jTextField2.getText();
+        String author = jTextField3.getText();
+        String type = jTextField4.getText();
+        String s = jTextField5.getText();
+        if(!s.isEmpty())
+        {try {int stock = Integer.parseInt(s);}catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Please Enter an integer value",
+                               "Book", JOptionPane.WARNING_MESSAGE  );
+            return;
+        }}
+        if(name.isEmpty()||desc.isEmpty()||author.isEmpty()||type.isEmpty()|| s.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Please Enter all values",
+                               "Book", JOptionPane.WARNING_MESSAGE  );
+        }else{
+            try {
+                 Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+                 Statement myStat = Conn.createStatement();
+                myStat.execute("update book"+" set name ='"+name+"',description = '"+ desc+"',author = '"+ author+"',"
+                        + "type = '"+type+"',stock = "+ s+" where id = 3");
+               
+                Conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Error",
+                               "Book", JOptionPane.WARNING_MESSAGE  );
+            }
+        JOptionPane.showMessageDialog(this, "Book Updated",
+                               "Book", JOptionPane.INFORMATION_MESSAGE  );
+        Main_frame f=new Main_frame();
+        f.setVisible(true);
+        this.dispose();
+        }
     }//GEN-LAST:event_saveActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-//bookdetails b = new bookdetails();
-//b.setVisible(true);
+book_management b = new book_management();
+b.setVisible(true);
 this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
