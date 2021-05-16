@@ -8,6 +8,7 @@ package library;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -17,12 +18,24 @@ import javax.swing.JOptionPane;
  * @author osama
  */
 public class updatedetails extends javax.swing.JFrame {
-
+    ArrayList<String> s = new ArrayList<String>();
+    String id;
     /**
      * Creates new form updatedetails
      */
-    public updatedetails() {
+    public updatedetails(ArrayList<String> m) {
         initComponents();
+        this.s.addAll(m);
+        jTextField1.setText(s.get(0));
+        jTextField2.setText(s.get(1));
+        jTextField3.setText(s.get(2));
+        jTextField4.setText(s.get(3));
+        jTextField5.setText(s.get(4));
+        id=s.get(5);
+    }
+
+    private updatedetails() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -155,7 +168,7 @@ public class updatedetails extends javax.swing.JFrame {
                  Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
                  Statement myStat = Conn.createStatement();
                 myStat.execute("update book"+" set name ='"+name+"',description = '"+ desc+"',author = '"+ author+"',"
-                        + "type = '"+type+"',stock = "+ s+" where id = 3");
+                        + "type = '"+type+"',stock = "+ s+" where id ="+id);
                
                 Conn.close();
             } catch (Exception ex) {

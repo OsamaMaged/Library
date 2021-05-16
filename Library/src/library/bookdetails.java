@@ -211,7 +211,7 @@ public ArrayList<String> s=new ArrayList<String>();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-    updatedetails b = new updatedetails();
+    updatedetails b = new updatedetails(s);
         b.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_updateActionPerformed

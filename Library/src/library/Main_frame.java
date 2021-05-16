@@ -26,16 +26,16 @@ public class Main_frame extends javax.swing.JFrame {
    
    //execute sql query
     
-      String query2 ="CREATE TABLE userType (TypeId INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,"
-              + " type VARCHAR(255) NOT NULL)";
-      String query3 ="CREATE TABLE user (id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,"
-              + " name VARCHAR(255) NOT NULL, "
+    //  String query2 ="CREATE TABLE userType (TypeId INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,"
+      //        + " type VARCHAR(255) NOT NULL)";
+     /* String query3 ="CREATE TABLE user (id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,"
+              + "name VARCHAR(255) NOT NULL, "
               + "email VARCHAR(255) NOT NULL,"
               + "userTypeID INT(11) FOREIGN KEY REFERENCES userType (TypeId) )";
   // myStmt.execute(query1);
-   myStmt.execute(query2);
+ //  myStmt.execute(query2);
    myStmt.execute(query3);
-
+*/  
     System.out.println("table Created Successfully");
    myConn.close();
 }

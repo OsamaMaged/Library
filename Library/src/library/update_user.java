@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -19,11 +20,19 @@ import javax.swing.JOptionPane;
  */
 public class update_user extends javax.swing.JFrame {
 int type;
+ArrayList<String>s=new ArrayList<String>();
     /**
      * Creates new form update_user
      */
-    public update_user() {
+    public update_user(ArrayList<String>m) {
         initComponents();
+        this.s.addAll(m);
+        jTextField1.setText(s.get(0));
+        jTextField2.setText(s.get(1));
+    }
+
+    private update_user() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -159,35 +168,35 @@ int type;
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         String name = jTextField1.getText();
         String email = jTextField2.getText();
-        
+        type=jComboBox1.getSelectedIndex();
         
         if(name.isEmpty()||email.isEmpty())
         {
             JOptionPane.showMessageDialog(this, "Please Enter all values",
-                "Book", JOptionPane.WARNING_MESSAGE  );
+                "User", JOptionPane.WARNING_MESSAGE  );
         }else{
             try {
                 Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
                 Statement myStat = Conn.createStatement();
                 myStat.execute("update user"+" set name ='"+name+"',email = '"+ email+"',"
-                    + "type = "+type+" where id = 3");
-
+                    + "userTypeID = "+type+" where id = "+s.get(3));
+                JOptionPane.showMessageDialog(this, "User Updated",
+                               "User", JOptionPane.INFORMATION_MESSAGE  );
+                Main_frame f=new Main_frame();
+                f.setVisible(true);
+            this.dispose();
                 Conn.close();
             } catch (Exception ex) {
                 Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(this, "Error",
-                    "Book", JOptionPane.WARNING_MESSAGE  );
+                    "User", JOptionPane.WARNING_MESSAGE  );
             }
-            JOptionPane.showMessageDialog(this, "Book Updated",
-                "Book", JOptionPane.INFORMATION_MESSAGE  );
-            Main_frame f=new Main_frame();
-            f.setVisible(true);
-            this.dispose();
+           
         }
     }//GEN-LAST:event_saveActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-         type = evt.getActionCommand().indexOf(jComboBox1.getName());
+         type = jComboBox1.getSelectedIndex();
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 

@@ -161,26 +161,28 @@ ArrayList<String>m=new ArrayList<String>();
                     m.add(1,myR.getString("email"));
                     m.add(2,myR.getString("userTypeID"));
                     m.add(3,myR.getString("id"));
-                    ResultSet myRs = myS.executeQuery("select * from userType where TypeId like"+m.get(2));
-                    m.add(4,myRs.getString("type"));
-                    ArrayList<String>s = new ArrayList<String>();
-                    System.out.println(m.get(0)+" "+m.get(1)+" "+m.get(2)+" "+m.get(3)+" "+m.get(4));
+                    System.out.println(m.get(0)+" "+m.get(1)+" "+m.get(2)+" "+m.get(3));
+
 
                 }
+       //         ResultSet myRs = mySt.executeQuery("select * from userType where TypeID ="+m.get(2));
+     //        System.out.println(myRs.getString(0)+" "+myRs.getString(1) );
+  //                 m.add(4,myRs.getString("type"));
+    //                System.out.println(m.get(0)+" "+m.get(1)+" "+m.get(2)+" "+m.get(3)+" "+m.get(4));
+                
                 myConn.close();
                 if(flag)
                 {JOptionPane.showMessageDialog(this, "This user doesn't exist",
                     "User", JOptionPane.WARNING_MESSAGE  );}
             else{
-                userdetails b = new userdetails(m);
-                b.setVisible(true);
+                new user_details(m).setVisible(true);
                 this.dispose();
             }
         }else  JOptionPane.showMessageDialog(this, "Enter the user name",
             "User", JOptionPane.WARNING_MESSAGE  );
         } catch (Exception ex) {
-            Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this, "This user doesn't exist",
+            Logger.getLogger(users_main.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error",
                 "User", JOptionPane.WARNING_MESSAGE  );
 
             try {

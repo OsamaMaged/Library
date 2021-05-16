@@ -124,27 +124,30 @@ public class adduser extends javax.swing.JFrame {
 
         String name = jTextField1.getText();
         String email = jTextField2.getText();
-       
+        type=jComboBox1.getSelectedIndex();
         
         if(name.isEmpty()||email.isEmpty())
         {
             JOptionPane.showMessageDialog(this, "Please Enter all values",
-                "Book", JOptionPane.WARNING_MESSAGE  );
+                "User", JOptionPane.WARNING_MESSAGE  );
         }else{
             try {
                 Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
                 Statement myStat = Conn.createStatement();
-                myStat.executeUpdate("INSERT INTO user"+" VALUES (NULL,'"+name+"','"+ email+"','"+type+")");
+                myStat.executeUpdate("INSERT INTO user"+" VALUES (NULL,'"+name+"','"+ email+"',"+type+")");
                 jTextField1.setText("");
                 jTextField2.setText("");
                 Conn.close();
+                JOptionPane.showMessageDialog(this, "User Added",
+                "User", JOptionPane.INFORMATION_MESSAGE  );
+                Main_frame f=new Main_frame();
+                f.setVisible(true);
             } catch (Exception ex) {
                 Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(this, "Error",
-                    "Book", JOptionPane.WARNING_MESSAGE  );
+                    "User", JOptionPane.WARNING_MESSAGE  );
             }
-            JOptionPane.showMessageDialog(this, "Book Added",
-                "Book", JOptionPane.INFORMATION_MESSAGE  );
+            
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -156,7 +159,7 @@ public class adduser extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-         type = evt.getActionCommand().indexOf(jComboBox1.getName());
+         type = jComboBox1.getSelectedIndex();
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed

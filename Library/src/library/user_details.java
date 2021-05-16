@@ -5,8 +5,6 @@
  */
 package library;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,24 +15,42 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import static library.Main_frame.myConn;
+
 /**
  *
  * @author Marwa Elgheitani
  */
-public class userdetails extends javax.swing.JPanel {
-ArrayList <String> s =new ArrayList<String>();
+public class user_details extends javax.swing.JFrame {
+
+   ArrayList <String> s =new ArrayList<String>();
     /**
-     * Creates new form userdetails
+     * Creates new form user_details
      */
-    public userdetails(ArrayList<String> m) {
-        initComponents();
-        s.addAll(m);
-        jTextField1.setText(s.get(0));
-        jTextField2.setText(s.get(1));
-        jTextField3.setText(s.get(4));
+    public user_details(ArrayList<String> m) {
+       try {
+           initComponents();
+           s.addAll(m);
+           Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+           Statement a = c.createStatement();
+            ResultSet f = a.executeQuery("SELECT * FROM usertype WHERE TypeId = "+s.get(2));
+            while(f.next()){
+            System.out.println("type = "+f.getString("type"));
+            s.add(f.getString("type"));
+            }
+//            System.out.println(myRs.getString("TypeId")+" "+myRs.getString("type") );
+           jTextField1.setText(s.get(0));jTextField1.setEditable(false);
+           jTextField2.setText(s.get(1));jTextField2.setEditable(false);
+            jTextField3.setText(s.get(4));jTextField3.setEditable(false);
+
+       } catch (SQLException ex) {
+           Logger.getLogger(user_details.class.getName()).log(Level.SEVERE, null, ex);
+       }
 
     }
 
+    private user_details() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,16 +60,47 @@ ArrayList <String> s =new ArrayList<String>();
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        update = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
         delete = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        update = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        delete.setText("Delete");
+        delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Name");
+
+        jLabel3.setText("Email");
+
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
+        jLabel1.setText("User details");
+
+        jTextField2.setToolTipText("Book details");
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Type");
 
         update.setText("Update");
         update.addActionListener(new java.awt.event.ActionListener() {
@@ -76,41 +123,12 @@ ArrayList <String> s =new ArrayList<String>();
             }
         });
 
-        delete.setText("Delete");
-        delete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("Name");
-
-        jLabel3.setText("Email");
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
-        jLabel1.setText("User details");
-
-        jTextField2.setToolTipText("Book details");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-
-        jLabel6.setText("Type");
-
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 25, Short.MAX_VALUE)
+                .addGap(0, 15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,26 +184,12 @@ ArrayList <String> s =new ArrayList<String>();
                     .addComponent(delete))
                 .addGap(38, 38, 38))
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-        update_user b = new update_user();
-        b.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_updateActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        searchbook b = new searchbook(s);
-        b.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        int result = JOptionPane.showConfirmDialog(this,"Do you want to delete this user?", "Delete user",
+      int result = JOptionPane.showConfirmDialog(this,"Do you want to delete this user?", "Delete user",
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE);
         if(result == JOptionPane.YES_OPTION){
@@ -194,25 +198,80 @@ ArrayList <String> s =new ArrayList<String>();
                 Statement myS = myConn.createStatement();
                 String SQL= "delete from user where id = "+s.get(3);
                 myS.execute(SQL);
+                JOptionPane.showMessageDialog(this, "User Deleted",
+                               "User", JOptionPane.INFORMATION_MESSAGE  );
+                  Main_frame f=new Main_frame();
+                f.setVisible(true);
                 myConn.close();
 
-                this.setVisible(false);
+                this.dispose();
             } catch (SQLException ex) {
                 Logger.getLogger(bookdetails.class.getName()).log(Level.SEVERE, null, ex);
             }
         }else if (result == JOptionPane.NO_OPTION){
 
         }
+                  
     }//GEN-LAST:event_deleteActionPerformed
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
 
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+        update_user b = new update_user(s);
+        b.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_updateActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        users_main b = new users_main();
+        b.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(user_details.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(user_details.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(user_details.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(user_details.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new user_details().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton delete;
