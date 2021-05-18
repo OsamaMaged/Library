@@ -10,6 +10,7 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static library.Main_frame.myConn;
+
 /**
  *
  * @author osama
@@ -17,10 +18,8 @@ import static library.Main_frame.myConn;
 public class addbook extends javax.swing.JFrame {
 
     //Statement mySt = conn.createStatement();
-   // Library lib = new Library(conn,st);
-
-
-   /**
+    // Library lib = new Library(conn,st);
+    /**
      * Creates new form addbook
      */
     public addbook() {
@@ -175,21 +174,24 @@ public class addbook extends javax.swing.JFrame {
         String author = jTextField3.getText();
         String type = jTextField4.getText();
         String s = jTextField5.getText();
-        if(!s.isEmpty())
-        {try {int stock = Integer.parseInt(s);}catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Please Enter an integer value",
-                               "Book", JOptionPane.WARNING_MESSAGE  );
-            return;
-        }}
-        if(name.isEmpty()||desc.isEmpty()||author.isEmpty()||type.isEmpty()|| s.isEmpty())
-        {
-            JOptionPane.showMessageDialog(this, "Please Enter all values",
-                               "Book", JOptionPane.WARNING_MESSAGE  );
-        }else{
+        if (!s.isEmpty()) {
             try {
-                 Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-                 Statement myStat = Conn.createStatement();
-                myStat.executeUpdate("INSERT INTO book"+" VALUES (NULL,'"+name+"','"+ desc+"','"+ author+"','"+type+"',"+ s+")");
+                int stock = Integer.parseInt(s);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Please Enter an integer value",
+                        "Book", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+        if (name.isEmpty() || desc.isEmpty() || author.isEmpty() || type.isEmpty() || s.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Enter all values",
+                    "Book", JOptionPane.WARNING_MESSAGE);
+                return;
+        } else {
+            try {
+                Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+                Statement myStat = Conn.createStatement();
+                myStat.executeUpdate("INSERT INTO book" + " VALUES (NULL,'" + name + "','" + desc + "','" + author + "','" + type + "'," + s + ")");
                 jTextField1.setText("");
                 jTextField2.setText("");
                 jTextField3.setText("");
@@ -199,12 +201,12 @@ public class addbook extends javax.swing.JFrame {
             } catch (Exception ex) {
                 Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(this, "Error",
-                               "Book", JOptionPane.WARNING_MESSAGE  );
+                        "Book", JOptionPane.WARNING_MESSAGE);
             }
-        JOptionPane.showMessageDialog(this, "Book Added",
-                               "Book", JOptionPane.INFORMATION_MESSAGE  );
+            JOptionPane.showMessageDialog(this, "Book Added",
+                    "Book", JOptionPane.INFORMATION_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

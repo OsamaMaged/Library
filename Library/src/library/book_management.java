@@ -20,12 +20,14 @@ import static library.Main_frame.myConn;
  * @author osama
  */
 public class book_management extends javax.swing.JFrame {
-public ArrayList<String> m;
+
+    public ArrayList<String> m;
+
     /**
      * Creates new form book_management
      */
 //public book_management(ArrayList<String> s) {s=this.m;}
-          
+
     public book_management() {
         initComponents();
     }
@@ -80,7 +82,7 @@ public ArrayList<String> m;
             }
         });
 
-        jLabel2.setText("Search for Book Name");
+        jLabel2.setText("Search by Book Name");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -88,23 +90,23 @@ public ArrayList<String> m;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jButton3)
+                .addGap(60, 60, 60)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(57, 57, 57)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jLabel2))
+                        .addComponent(jLabel2)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(26, 26, 26))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(26, 26, 26))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,62 +141,60 @@ public ArrayList<String> m;
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
- m=new ArrayList<String>();
-        boolean flag=true;
+        m = new ArrayList<String>();
+        boolean flag = true;
         try {
-            String Result =jTextField1.getText();
-            if(!Result.isEmpty())
-            {
-            myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-            Statement myS = myConn.createStatement();
-            ResultSet myR = myS.executeQuery("select * from book where name like '"+Result+"'");
-            while (myR.next()) {
-                flag=false;
-    System.out.println(myR.getString("id")+ " , "+myR.getString("name"));
-       
-       m.add(0,myR.getString("name"));
-            m.add(1,myR.getString("description"));
-            m.add(2,myR.getString("author"));
-            m.add(3,myR.getString("type"));
-            m.add(4,myR.getString("stock"));
-            m.add(5,myR.getString("id"));
-      ArrayList<String>s = new ArrayList<String>();
-      System.out.println(m.get(0)+" "+m.get(1)+" "+m.get(2)+" "+m.get(3)+" "+m.get(4));
+            String Result = jTextField1.getText();
+            if (!Result.isEmpty()) {
+                myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+                Statement myS = myConn.createStatement();
+                ResultSet myR = myS.executeQuery("select * from book where name like '" + Result + "'");
+                while (myR.next()) {
+                    flag = false;
+                    System.out.println(myR.getString("id") + " , " + myR.getString("name"));
 
+                    m.add(0, myR.getString("name"));
+                    m.add(1, myR.getString("description"));
+                    m.add(2, myR.getString("author"));
+                    m.add(3, myR.getString("type"));
+                    m.add(4, myR.getString("stock"));
+                    m.add(5, myR.getString("id"));
+                    ArrayList<String> s = new ArrayList<String>();
+                    System.out.println(m.get(0) + " " + m.get(1) + " " + m.get(2) + " " + m.get(3) + " " + m.get(4));
 
-   }
-        myConn.close();
-        if(flag)
-        {JOptionPane.showMessageDialog(this, "This book doesn't exist",
-                               "Book", JOptionPane.WARNING_MESSAGE  );}
-        else{
-        searchbook b = new searchbook(m);
-        b.setVisible(true);
-        this.dispose();
-        }
-            }else  JOptionPane.showMessageDialog(this, "Enter the Book name",
-                               "Book", JOptionPane.WARNING_MESSAGE  );
+                }
+                myConn.close();
+                if (flag) {
+                    JOptionPane.showMessageDialog(this, "This book doesn't exist",
+                            "Book", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    searchbook b = new searchbook(m);
+                    b.setVisible(true);
+                    this.dispose();
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Enter the Book name",
+                        "Book", JOptionPane.WARNING_MESSAGE);
+            }
         } catch (Exception ex) {
             Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "This book doesn't exist",
-                               "Book", JOptionPane.WARNING_MESSAGE  );
-            
-        try {
-            myConn.close();
-        } catch (SQLException ex1) {
-            Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex1);
+                    "Book", JOptionPane.WARNING_MESSAGE);
+
+            try {
+                myConn.close();
+            } catch (SQLException ex1) {
+                Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex1);
+            }
         }
-        }
-   
-   //create statement 
- 
-   
-       
+
+        //create statement 
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-         Main_frame b = new Main_frame();
+        Main_frame b = new Main_frame();
         b.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed

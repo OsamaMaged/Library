@@ -7,6 +7,7 @@ package library;
 
 import java.sql.*;
 import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,14 +17,15 @@ public class addTransaction extends javax.swing.JFrame {
 
     Connection c;
     ResultSet rs = null;
-    PreparedStatement pst = null;
+    Statement st = null;
+    String date;
 
     /**
      * Creates new form transaction_management
      */
     public addTransaction() {
         initComponents();
-        String date = new Date().toString();
+        date = new Date().toString();
         currentDate.setText(date);
         c = Database_connection.connect();
     }
@@ -45,6 +47,7 @@ public class addTransaction extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         userID = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,6 +70,13 @@ public class addTransaction extends javax.swing.JFrame {
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        backButton.setText("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
             }
         });
 
@@ -97,14 +107,18 @@ public class addTransaction extends javax.swing.JFrame {
                                 .addComponent(bookID, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(173, 173, 173)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(173, 173, 173)
+                        .addComponent(jButton1))
+                    .addComponent(backButton))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addComponent(backButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -118,7 +132,7 @@ public class addTransaction extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(userID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(56, 56, 56))
         );
@@ -131,30 +145,55 @@ public class addTransaction extends javax.swing.JFrame {
     }//GEN-LAST:event_bookIDActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String bookID = this.bookID.getText();
+        String userID = this.userID.getText();
+
+        //Check that input values are of valid format
+        if (bookID.isEmpty() || userID.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Enter all values",
+                    "Transaction", JOptionPane.ERROR_MESSAGE);
+            return;
+        } else if (!bookID.matches("[0-9]+") || !userID.matches("[0-9]+")) {
+            JOptionPane.showMessageDialog(this, "All values must be integers",
+                    "Transaction", JOptionPane.ERROR_MESSAGE);
+        }
+        ////////////////////////////////////////////////
+
+        //Insert the new transaction
         try {
-            String sql = "insert into transaction values (?,?,?,?)";
-            pst = c.prepareStatement(sql);
-            Date d = (Date) new Date();
-            System.out.println("1");
-            //   pst.setString(1, d.toString());
-            pst.setInt(1, 3);
-            System.out.println("1");
 
-            pst.setInt(2, 4);
-            System.out.println("1");
-            pst.setInt(3, 3);
-            System.out.println("1");
+            st = c.createStatement();
 
-            pst.setInt(4, 4);
-            System.out.println("1");
+            //insert borrowed book ID into transaction detail
+            String sql = "INSERT INTO transactiondetails" + " VALUES (NULL,'" + bookID + "')";
+            st.executeUpdate(sql, st.RETURN_GENERATED_KEYS);
+            rs = st.getGeneratedKeys();
+            rs.next();
 
-            pst.executeUpdate();
-            System.out.println("1");
+            //get last index inserted in transaction details
+            int transactionDetailsId = rs.getInt(1);
 
+            //insert transaction detail into transaction and link it to the user making this transaction
+            sql = "INSERT INTO transaction" + " VALUES (NULL,'" + date + "', '" + transactionDetailsId + "', '" + userID + "')";
+            st.executeUpdate(sql);
+            
+
+            this.bookID.setText("");
+            this.userID.setText("");
+            
+            //show success message after insertion
+            JOptionPane.showMessageDialog(this, "Transaction added successfully",
+                    "Transaction", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
-            System.out.println("Can't add transaction");
+            JOptionPane.showMessageDialog(this, "\r Transaction not added \n Make sure that book & user id already exist in the DB",
+                    "Transaction", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        new transaction_management().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_backButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -174,6 +213,7 @@ public class addTransaction extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backButton;
     private javax.swing.JTextField bookID;
     private javax.swing.JLabel currentDate;
     private javax.swing.JButton jButton1;
