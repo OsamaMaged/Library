@@ -226,12 +226,8 @@ public class transaction_details extends javax.swing.JFrame {
                 sql = "DELETE from transactiondetails where id = '" + transaction.getTransactionDetailsID() + "'";
                 st.executeUpdate(sql);
 
-                idTextField.setText("");
-                dateTextField.setText("");
-                bookIdTextField.setText("");
-                userIdTextField.setText("");
-                bookNameTextField.setText("");
-
+                new transaction_management().setVisible(true);
+                this.dispose();
                 JOptionPane.showMessageDialog(this, "Transaction Deleted successfully",
                         "Delete Transaction", JOptionPane.INFORMATION_MESSAGE);
 

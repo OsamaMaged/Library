@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package library;
+package library.users;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import library.Main_frame;
+import library.bookdetails;
 import static library.Main_frame.myConn;
 
 /**
@@ -22,35 +24,40 @@ import static library.Main_frame.myConn;
  */
 public class user_details extends javax.swing.JFrame {
 
-   ArrayList <String> s =new ArrayList<String>();
+    ArrayList<String> s = new ArrayList<String>();
+
     /**
      * Creates new form user_details
      */
     public user_details(ArrayList<String> m) {
-       try {
-           initComponents();
-           s.addAll(m);
-           Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-           Statement a = c.createStatement();
-            ResultSet f = a.executeQuery("SELECT * FROM usertype WHERE TypeId = "+s.get(2));
-            while(f.next()){
-            System.out.println("type = "+f.getString("type"));
-            s.add(f.getString("type"));
+        try {
+            initComponents();
+            s.addAll(m);
+            Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+            Statement a = c.createStatement();
+            ResultSet f = a.executeQuery("SELECT * FROM usertype WHERE TypeId = " + s.get(2));
+            while (f.next()) {
+                System.out.println("type = " + f.getString("type"));
+                s.add(f.getString("type"));
             }
 //            System.out.println(myRs.getString("TypeId")+" "+myRs.getString("type") );
-           jTextField1.setText(s.get(0));jTextField1.setEditable(false);
-           jTextField2.setText(s.get(1));jTextField2.setEditable(false);
-            jTextField3.setText(s.get(4));jTextField3.setEditable(false);
+            jTextField1.setText(s.get(0));
+            jTextField1.setEditable(false);
+            jTextField2.setText(s.get(1));
+            jTextField2.setEditable(false);
+            jTextField3.setText(s.get(4));
+            jTextField3.setEditable(false);
 
-       } catch (SQLException ex) {
-           Logger.getLogger(user_details.class.getName()).log(Level.SEVERE, null, ex);
-       }
+        } catch (SQLException ex) {
+            Logger.getLogger(user_details.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
     private user_details() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -189,18 +196,18 @@ public class user_details extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-      int result = JOptionPane.showConfirmDialog(this,"Do you want to delete this user?", "Delete user",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE);
-        if(result == JOptionPane.YES_OPTION){
+        int result = JOptionPane.showConfirmDialog(this, "Do you want to delete this user?", "Delete user",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+        if (result == JOptionPane.YES_OPTION) {
             try {
                 myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
                 Statement myS = myConn.createStatement();
-                String SQL= "delete from user where id = "+s.get(3);
+                String SQL = "delete from user where id = " + s.get(3);
                 myS.execute(SQL);
                 JOptionPane.showMessageDialog(this, "User Deleted",
-                               "User", JOptionPane.INFORMATION_MESSAGE  );
-                  Main_frame f=new Main_frame();
+                        "User", JOptionPane.INFORMATION_MESSAGE);
+                Main_frame f = new Main_frame();
                 f.setVisible(true);
                 myConn.close();
 
@@ -208,10 +215,10 @@ public class user_details extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(bookdetails.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else if (result == JOptionPane.NO_OPTION){
+        } else if (result == JOptionPane.NO_OPTION) {
 
         }
-                  
+
     }//GEN-LAST:event_deleteActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
@@ -229,7 +236,7 @@ public class user_details extends javax.swing.JFrame {
     }//GEN-LAST:event_updateActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        users_main b = new users_main();
+        users_management b = new users_management();
         b.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed

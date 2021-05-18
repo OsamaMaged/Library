@@ -65,7 +65,7 @@ public class transaction_management extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Search by user ID");
+        jLabel2.setText("Search by User ID");
 
         searchTransaction.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         searchTransaction.setToolTipText("Enter book name");

@@ -5,6 +5,7 @@
  */
 package library;
 
+import library.users.users_management;
 import library.transactions.transaction_management;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -120,7 +121,7 @@ public class Main_frame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        users_main m = new users_main();
+        users_management m = new users_management();
         m.setVisible(true);
         this.dispose();
         // TODO add your handling code here:
