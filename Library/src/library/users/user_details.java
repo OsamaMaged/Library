@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import library.Main_frame;
-import library.bookdetails;
+import library.books.bookdetails;
 import static library.Main_frame.myConn;
 
 /**

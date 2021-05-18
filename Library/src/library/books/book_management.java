@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package library;
+package library.books;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import library.Main_frame;
 import static library.Main_frame.myConn;
 
 /**

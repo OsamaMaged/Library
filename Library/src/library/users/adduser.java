@@ -14,8 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import library.Main_frame;
-import library.addbook;
-import library.book_management;
+import library.books.addbook;
+import library.books.book_management;
 
 /**
  *
