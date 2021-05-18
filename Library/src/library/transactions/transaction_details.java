@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package library;
+package library.transactions;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import library.folder.Transaction;
+import javax.swing.JOptionPane;
+import library.Database_connection;
 
 /**
  *
@@ -70,8 +71,18 @@ public class transaction_details extends javax.swing.JFrame {
         bookNameTextField.setEditable(false);
 
         updateButton.setText("Update");
+        updateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateButtonActionPerformed(evt);
+            }
+        });
 
         deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("back");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -160,9 +171,76 @@ public class transaction_details extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new searchTransactionResults().setVisible(true);
+        new transaction_management().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+
+        String transactionId = idTextField.getText();
+        String date = dateTextField.getText();
+        String bookId = bookIdTextField.getText();
+        String userId = userIdTextField.getText();
+
+        //Check that input values are of valid format
+        if (date.isEmpty() || userId.isEmpty() || bookId.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No emtpy fields are allowed",
+                    "Transaction", JOptionPane.ERROR_MESSAGE);
+            return;
+        } else if (!bookId.matches("[0-9]+") || !userId.matches("[0-9]+")) {
+            JOptionPane.showMessageDialog(this, "book and user IDs must be integers",
+                    "Transaction", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        ////////////////////////////////////////////////
+
+        //Update data in DB
+        try {
+            String sql = "UPDATE transaction set date = '" + date + "' where id = '" + transactionId + "'";
+            st.executeUpdate(sql);
+
+            sql = "UPDATE transaction set user_id = '" + userId + "' where id = '" + transactionId + "'";
+            st.executeUpdate(sql);
+
+            sql = "UPDATE transactiondetails set book_id = '" + bookId + "' where id = '" + transaction.getTransactionDetailsID() + "'";
+            st.executeUpdate(sql);
+
+            JOptionPane.showMessageDialog(this, "Transaction updated successfully",
+                    "Update Transaction", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            System.out.println("failed to update");
+        }
+    }//GEN-LAST:event_updateButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        int result = JOptionPane.showConfirmDialog(this, "Do you want to delete this transaction?", "Delete user", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        //if user confirmed deleting record
+        if (result == JOptionPane.YES_OPTION) {
+            try {
+
+                //delete the transaction and all of its transaction details
+                String sql = "DELETE from transaction where id = '" + idTextField.getText() + "'";
+                st.executeUpdate(sql);
+
+                sql = "DELETE from transactiondetails where id = '" + transaction.getTransactionDetailsID() + "'";
+                st.executeUpdate(sql);
+
+                idTextField.setText("");
+                dateTextField.setText("");
+                bookIdTextField.setText("");
+                userIdTextField.setText("");
+                bookNameTextField.setText("");
+
+                JOptionPane.showMessageDialog(this, "Transaction Deleted successfully",
+                        "Delete Transaction", JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (Exception e) {
+                System.out.println("failed to delete");
+            }
+
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -199,8 +277,9 @@ public class transaction_details extends javax.swing.JFrame {
         });
     }
 
-    //show transaction details 
+    //show transaction details in this window
     public void showTransaction(Transaction transaction) {
+        this.transaction = transaction;
         idTextField.setText(transaction.getId());
         dateTextField.setText(transaction.getDate());
         userIdTextField.setText(transaction.getUserId());
@@ -208,6 +287,7 @@ public class transaction_details extends javax.swing.JFrame {
 
     }
 
+    // to get data from foreign keys of transaction
     public void getForeignData(Transaction transaction) {
         try {
             //get book id from transaction details id
@@ -217,12 +297,14 @@ public class transaction_details extends javax.swing.JFrame {
             rs.next();
             String bookId = rs.getString("book_id");
             bookIdTextField.setText(bookId);
-            
+
+            //get book name from book id
             sql = "SELECT name FROM book where id = '" + bookId + "'";
             rs = st.executeQuery(sql);
             rs.next();
             String bookName = rs.getString("name");
             bookNameTextField.setText(bookName);
+
         } catch (Exception e) {
             System.out.println("failed to get foreign data");
         }

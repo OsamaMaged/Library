@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package library;
+package library.transactions;
 
-import library.folder.Transaction;
+import library.transactions.transaction_management;
+import library.transactions.transaction_details;
+import library.transactions.Transaction;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;

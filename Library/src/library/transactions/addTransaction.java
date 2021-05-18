@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package library;
+package library.transactions;
 
+import library.transactions.transaction_management;
 import java.sql.*;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import library.Database_connection;
 
 /**
  *
@@ -183,7 +185,7 @@ public class addTransaction extends javax.swing.JFrame {
             
             //show success message after insertion
             JOptionPane.showMessageDialog(this, "Transaction added successfully",
-                    "Transaction", JOptionPane.INFORMATION_MESSAGE);
+                    "Add Transaction", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "\r Transaction not added \n Make sure that book & user id already exist in the DB",
                     "Transaction", JOptionPane.ERROR_MESSAGE);
