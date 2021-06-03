@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import library.Main_frame;
 import static library.Main_frame.myConn;
 
 /**
@@ -16,14 +17,35 @@ import static library.Main_frame.myConn;
  * @author osama
  */
 public class addbook extends javax.swing.JFrame {
-
+Connection Conn;
+Statement myS;
+public int nam,ty;
     //Statement mySt = conn.createStatement();
     // Library lib = new Library(conn,st);
     /**
      * Creates new form addbook
      */
+    
     public addbook() {
         initComponents();
+        try {
+                Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+                Statement myStat1 = Conn.createStatement();
+                Statement myStat2 = Conn.createStatement();
+                ResultSet r1 = myStat1.executeQuery("SELECT * FROM author_name");
+                ResultSet r2 = myStat2.executeQuery("SELECT * FROM booktype");
+                 while (r1.next()) {
+               jComboBox1.addItem(r1.getString("name"));
+                }
+                  while (r2.next()) {
+                  jComboBox2.addItem(r2.getString("type"));
+                }
+                Conn.close();
+            } catch (Exception ex) {
+                Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Error loading database",
+                    "Book", JOptionPane.WARNING_MESSAGE  );
+            }
     }
 
     /**
@@ -37,8 +59,6 @@ public class addbook extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -48,6 +68,8 @@ public class addbook extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox2 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,10 +77,6 @@ public class addbook extends javax.swing.JFrame {
         jLabel1.setText("Adding Book");
 
         jTextField2.setToolTipText("Enter book details");
-
-        jTextField3.setToolTipText("Enter author name");
-
-        jTextField4.setToolTipText("Enter book type");
 
         jTextField5.setToolTipText("Enter book Quantity");
 
@@ -88,6 +106,20 @@ public class addbook extends javax.swing.JFrame {
 
         jLabel6.setText("Stock");
 
+        jComboBox1.setMaximumRowCount(100);
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jComboBox2.setMaximumRowCount(100);
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -107,7 +139,7 @@ public class addbook extends javax.swing.JFrame {
                         .addGroup(layout.createSequentialGroup()
                             .addGap(38, 38, 38)
                             .addComponent(jLabel6)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                             .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addContainerGap()
@@ -117,12 +149,11 @@ public class addbook extends javax.swing.JFrame {
                                 .addComponent(jLabel4)
                                 .addComponent(jLabel3))
                             .addGap(38, 38, 38)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                                .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -142,13 +173,13 @@ public class addbook extends javax.swing.JFrame {
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -171,8 +202,6 @@ public class addbook extends javax.swing.JFrame {
 
         String name = jTextField1.getText();
         String desc = jTextField2.getText();
-        String author = jTextField3.getText();
-        String type = jTextField4.getText();
         String s = jTextField5.getText();
         if (!s.isEmpty()) {
             try {
@@ -183,7 +212,7 @@ public class addbook extends javax.swing.JFrame {
                 return;
             }
         }
-        if (name.isEmpty() || desc.isEmpty() || author.isEmpty() || type.isEmpty() || s.isEmpty()) {
+        if (name.isEmpty() || desc.isEmpty() ||  s.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter all values",
                     "Book", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -191,11 +220,11 @@ public class addbook extends javax.swing.JFrame {
             try {
                 Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
                 Statement myStat = Conn.createStatement();
-                myStat.executeUpdate("INSERT INTO book" + " VALUES (NULL,'" + name + "','" + desc + "','" + author + "','" + type + "'," + s + ")");
+                myStat.executeUpdate("INSERT INTO book" + " VALUES (NULL,'" + name + "','" + desc + "','" + nam + "','" + ty + "'," + s + ")");
                 jTextField1.setText("");
                 jTextField2.setText("");
-                jTextField3.setText("");
-                jTextField4.setText("");
+                //jTextField3.setText("");
+                //jTextField4.setText("");
                 jTextField5.setText("");
                 Conn.close();
             } catch (Exception ex) {
@@ -208,6 +237,45 @@ public class addbook extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    try {
+        String author= jComboBox1.getSelectedItem().toString();
+                System.out.println(author);
+        Connection Co = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+         Statement myStat3 = Co.createStatement();
+        ResultSet f = myStat3.executeQuery("SELECT * FROM author_name WHERE name = '" + author+"'");
+        while (f.next()) {
+               author=f.getString("id");
+               nam=Integer.parseInt(author);
+                }
+        System.out.println(nam);
+        Co.close();
+    } catch (SQLException ex) {
+        Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+       try {
+        String type= jComboBox2.getSelectedItem().toString();
+                System.out.println(type);
+        Connection Co = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+         Statement myStat3 = Co.createStatement();
+        ResultSet f = myStat3.executeQuery("SELECT * FROM booktype WHERE type = '" + type+"'");
+        while (f.next()) {
+               type=f.getString("id");
+               ty=Integer.parseInt(type);
+                }
+        System.out.println(ty);
+        Co.close();
+    } catch (SQLException ex) {
+        Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+
+    }//GEN-LAST:event_jComboBox2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -247,6 +315,8 @@ public class addbook extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -255,8 +325,6 @@ public class addbook extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 }

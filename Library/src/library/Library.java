@@ -21,8 +21,8 @@ public class Library {
      */
     public static void main(String[] args) {
         
-    Main_frame m = new Main_frame();
-    m.show();
+    Login l = new Login();
+    l.show();
     }
   
     

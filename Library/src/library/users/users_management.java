@@ -162,7 +162,8 @@ ArrayList<String>m=new ArrayList<String>();
                     m.add(1,myR.getString("email"));
                     m.add(2,myR.getString("userTypeID"));
                     m.add(3,myR.getString("id"));
-                    System.out.println(m.get(0)+" "+m.get(1)+" "+m.get(2)+" "+m.get(3));
+                    m.add(4,myR.getString("password"));
+                    System.out.println(m.get(0)+" "+m.get(1)+" "+m.get(2)+" "+m.get(3)+" "+m.get(4));
 
 
                 }

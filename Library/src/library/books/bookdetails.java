@@ -6,6 +6,7 @@
 package library.books;
 
 import java.awt.Label;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,18 +23,35 @@ import static library.Main_frame.myConn;
  */
 public class bookdetails extends javax.swing.JFrame {
 public ArrayList<String> s=new ArrayList<String>();
-    /**
+String name;
+String type;
+/**
      * Creates new form bookdetails
      */
 //book_management book =new book_management();
     public bookdetails(ArrayList<String>m) {
+    try {
         initComponents();
-         s.addAll(m);
-         jTextField1.setText(s.get(0));jTextField1.setEditable(false);
-         jTextField2.setText(s.get(1));jTextField2.setEditable(false);
-         jTextField3.setText(s.get(2));jTextField3.setEditable(false);
-         jTextField4.setText(s.get(3));jTextField4.setEditable(false);
-         jTextField5.setText(s.get(4));jTextField5.setEditable(false);
+        s.addAll(m);
+        Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+        Statement myStat1 = Conn.createStatement();
+        Statement myStat2 = Conn.createStatement();
+        ResultSet r1 = myStat1.executeQuery("SELECT * FROM author_name where id = '"+s.get(2)+"'");
+        ResultSet r2 = myStat2.executeQuery("SELECT * FROM booktype where id = '"+s.get(3)+"'");
+        while (r1.next()) {
+            name=(r1.getString("name"));
+        }
+        while (r2.next()) {
+            type=(r2.getString("type"));
+        }
+        jTextField1.setText(s.get(0));jTextField1.setEditable(false);
+        jTextField2.setText(s.get(1));jTextField2.setEditable(false);
+        jTextField3.setText(name);jTextField3.setEditable(false);
+        jTextField4.setText(type);jTextField4.setEditable(false);
+        jTextField5.setText(s.get(4));jTextField5.setEditable(false);
+    } catch (SQLException ex) {
+        Logger.getLogger(bookdetails.class.getName()).log(Level.SEVERE, null, ex);
+    }
   
     
     }
