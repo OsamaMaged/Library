@@ -5,6 +5,7 @@
  */
 package library;
 
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -44,6 +45,7 @@ String type;String type_string;
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(153, 153, 255));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("Login Screen");
@@ -118,15 +120,8 @@ String type;String type_string;
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
@@ -137,32 +132,42 @@ String type;String type_string;
             ResultSet f = a.executeQuery("SELECT * FROM user where name = '"+name+"' AND password = '"+password+"'");
             while (f.next()) {
                 System.out.println("type = " + f.getString("userTypeID"));
-                type= f.getString("userTypeID");               
+                type= f.getString("userTypeID");
             }
             Statement b = con.createStatement();
             ResultSet r = b.executeQuery("SELECT * FROM usertype where TypeId = "+Integer.parseInt(type));
             while (r.next()) {
                 System.out.println("type_string = " + r.getString("type"));
-                type_string= r.getString("type");               
+                type_string= r.getString("type");
             }
             switch(type_string){
                 case "Admin":
-                    Main_frame m = new Main_frame();
-                    m.show();
-                    break;
+                Main_frame m = new Main_frame();
+                m.show();
+                this.dispose();
+                break;
                 case "Librarian":
-                    break;
+                break;
                 case "User":
-                    break;    
-        }
-           
+                JOptionPane.showMessageDialog(this, "You are just a user",
+                    "Login", JOptionPane.WARNING_MESSAGE  );
+                break;
+            }
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Wrong Name and Password",
-                    "Login", JOptionPane.WARNING_MESSAGE  );
+                "Login", JOptionPane.WARNING_MESSAGE  );
         }
 
-
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -194,7 +199,9 @@ String type;String type_string;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+              
                 new Login().setVisible(true);
+               
             }
         });
     }
