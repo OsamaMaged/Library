@@ -237,6 +237,7 @@ public class book_management extends javax.swing.JFrame {
         try {
             String author;
             author = JOptionPane.showInputDialog("What is the author name? ");
+            if(author != null){
             System.out.println(author);
             Connection Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
             Statement mySt = Con.createStatement();  
@@ -244,6 +245,10 @@ public class book_management extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Author Added",
                 "Author", JOptionPane.INFORMATION_MESSAGE  );
             Con.close();
+            }else{
+                JOptionPane.showMessageDialog(this, "Adding canceled",
+                "Author", JOptionPane.INFORMATION_MESSAGE  );
+            }
         } catch (SQLException ex) {
             Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -253,6 +258,7 @@ public class book_management extends javax.swing.JFrame {
  try {
             String type;
             type = JOptionPane.showInputDialog("What is the book type? ");
+            if(type != null){
             System.out.println(type);
             Connection Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
             Statement mySt = Con.createStatement();  
@@ -260,6 +266,10 @@ public class book_management extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Book Type Added",
                 "Book Type", JOptionPane.INFORMATION_MESSAGE  );
             Con.close();
+            }else {
+             JOptionPane.showMessageDialog(this, "Adding canceled",
+                "Author", JOptionPane.INFORMATION_MESSAGE  );
+            }
         } catch (SQLException ex) {
             Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -285,6 +295,7 @@ public class book_management extends javax.swing.JFrame {
             }
             String res = (String) JOptionPane.showInputDialog(null, "Which book you want to see its details?", "Books",
          JOptionPane.PLAIN_MESSAGE, null, names, names[0]);
+            if(res!=null){
             Statement c = con.createStatement();
             ResultSet r = c.executeQuery("SELECT * FROM book where name ='"+res+"'");
           ArrayList<String> x = new ArrayList<String>();
@@ -300,7 +311,8 @@ public class book_management extends javax.swing.JFrame {
         d.setVisible(true);
         this.dispose();            
             
-        
+            }else{ JOptionPane.showMessageDialog(this, "Canceled",
+                "Books", JOptionPane.INFORMATION_MESSAGE  );}
         } catch (SQLException ex) {
             Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex);
         }

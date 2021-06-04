@@ -243,6 +243,8 @@ String type;
                 Statement myS = myConn.createStatement();
                 String SQL= "delete from book where id = "+s.get(5);
                 myS.execute(SQL);
+                JOptionPane.showMessageDialog(this, "Book deleted",
+                    "Book", JOptionPane.WARNING_MESSAGE  );
                 myConn.close();
 
                 new book_management().setVisible(true);
