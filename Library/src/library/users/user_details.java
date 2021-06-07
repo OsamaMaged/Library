@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import library.Main_frame;
 import library.books.bookdetails;
-import static library.Main_frame.myConn;
+import static library.Main_frame.c;
 
 /**
  *
@@ -221,15 +221,15 @@ public class user_details extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
         if (result == JOptionPane.YES_OPTION) {
             try {
-                myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-                Statement myS = myConn.createStatement();
+                c = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+                Statement myS = c.createStatement();
                 String SQL = "delete from user where id = " + s.get(3);
                 myS.execute(SQL);
                 JOptionPane.showMessageDialog(this, "User Deleted",
                         "User", JOptionPane.INFORMATION_MESSAGE);
                 Main_frame f = new Main_frame();
                 f.setVisible(true);
-                myConn.close();
+                c.close();
 
                 this.dispose();
             } catch (SQLException ex) {

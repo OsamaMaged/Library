@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import library.Main_frame;
-import static library.Main_frame.myConn;
+import static library.Main_frame.c;
 
 
 /**
@@ -151,8 +151,8 @@ ArrayList<String>m=new ArrayList<String>();
             String Result =jTextField1.getText();
             if(!Result.isEmpty())
             {
-                myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-                Statement myS = myConn.createStatement();
+                c = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+                Statement myS = c.createStatement();
                 ResultSet myR = myS.executeQuery("select * from user where name like '"+Result+"'");
                 while (myR.next()) {
                     flag=false;
@@ -172,7 +172,7 @@ ArrayList<String>m=new ArrayList<String>();
   //                 m.add(4,myRs.getString("type"));
     //                System.out.println(m.get(0)+" "+m.get(1)+" "+m.get(2)+" "+m.get(3)+" "+m.get(4));
                 
-                myConn.close();
+                c.close();
                 if(flag)
                 {JOptionPane.showMessageDialog(this, "This user doesn't exist",
                     "User", JOptionPane.WARNING_MESSAGE  );}
@@ -188,11 +188,15 @@ ArrayList<String>m=new ArrayList<String>();
                 "User", JOptionPane.WARNING_MESSAGE  );
 
             try {
-                myConn.close();
+                c.close();
             } catch (SQLException ex1) {
                 Logger.getLogger(users_management.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
+
+        //create statement
+
+        //create statement
 
         //create statement
 

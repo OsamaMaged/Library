@@ -14,6 +14,9 @@ public class Transaction {
     String date;
     String userId;
     String userName;
+    String transactionDetailsID;
+    String bookId;
+    String bookName;
     String returnDate;
 
     public void setUserName(String userName) {
@@ -31,8 +34,7 @@ public class Transaction {
     public String getReturnDate() {
         return returnDate;
     }
-    String transactionDetailsID;
-
+    
     public Transaction(String id, String date, String userId, String transactionDetailsID) {
         this.id = id;
         this.date = date;
@@ -55,6 +57,24 @@ public class Transaction {
     public String getTransactionDetailsID() {
         return transactionDetailsID;
     }
+
+    public String getBookId() {
+        return bookId;
+    }
+
+    public String getBookName() {
+        return bookName;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
+    }
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
+    }
+    
+    
 
 
 }

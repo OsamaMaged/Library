@@ -195,8 +195,8 @@ public class adduser extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        book_management b = new book_management();
-        b.setVisible(true);
+        
+        new Main_frame().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 

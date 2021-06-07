@@ -15,6 +15,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import library.books.book;
 import library.books.view_all_books;
+import library.transactions.Transaction;
+import library.transactions.user_transaction_history;
 
 /**
  *
@@ -28,7 +30,7 @@ public class Main_frame extends javax.swing.JFrame {
 
     public Main_frame() {
         initComponents();
-       // applyPermissions();
+        applyPermissions();
         try {
             //connection to database
             c = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
@@ -198,7 +200,7 @@ public class Main_frame extends javax.swing.JFrame {
                     book.setTypeName(rs.getString("type"));
                 }
             }
-            
+
             view_all_books viewAllBooks = new view_all_books();
             viewAllBooks.fillBookTable(books);
             viewAllBooks.setVisible(true);
@@ -210,7 +212,49 @@ public class Main_frame extends javax.swing.JFrame {
     }//GEN-LAST:event_viewAllBooksBtnActionPerformed
 
     private void viewTransactionsHistoryBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTransactionsHistoryBtnActionPerformed
-        // TODO add your handling code here:
+
+        try {
+            ArrayList<Transaction> transactions = new ArrayList<>();
+            String sql = "SELECT * from transaction where user_id = '" + user_type.getUserID() + "'";
+            st = c.createStatement();
+            rs = st.executeQuery(sql);
+            //get all transaction of the current user and aff them to an array
+            while (rs.next()) {
+                transactions.add(new Transaction(rs.getString("id"), rs.getString("date"), rs.getString("user_id"), rs.getString("transactiondetails_id")));
+            }
+
+            //get book name from transaction details to show in transaction history table
+            for (int i = 0; i < transactions.size(); i++) {
+                Transaction transaction = transactions.get(i);               
+                sql = "Select due_date from transactiondetails where id='" + transaction.getTransactionDetailsID() + "'";
+                rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    transaction.setReturnDate(rs.getString("due_date"));
+                }
+
+                sql = "Select book_id from transactiondetails where id='" + transaction.getTransactionDetailsID() + "'";
+                rs = st.executeQuery(sql);
+                String bookId = null;
+                while (rs.next()) {
+                    bookId = rs.getString("book_id");
+                    transaction.setBookId(bookId);
+                }
+
+                sql = "Select name from book where id='" + bookId + "'";
+                rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    transaction.setBookName(rs.getString("name"));
+                }
+            }
+
+            user_transaction_history userTransactionHistory = new user_transaction_history();
+            userTransactionHistory.fillTransactinHistoryTable(transactions);
+            userTransactionHistory.setVisible(true);
+            this.dispose();
+
+        } catch (Exception e) {
+            System.out.println("Failed to fetch transaction history");
+        }
     }//GEN-LAST:event_viewTransactionsHistoryBtnActionPerformed
 
     /**

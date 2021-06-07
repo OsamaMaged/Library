@@ -133,8 +133,10 @@ public class Login extends javax.swing.JFrame {
                         "Login", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            String userID = null;
             while (f.next()) {
                 System.out.println("type = " + f.getString("userTypeID"));
+                userID = f.getString("id");
                 type = f.getString("userTypeID");
             }
             Statement b = con.createStatement();
@@ -144,6 +146,7 @@ public class Login extends javax.swing.JFrame {
                 type_string = r.getString("type");
             }
             user_type.setUserType(type);
+            user_type.setUserID(userID);
             new Main_frame().setVisible(true);
             this.dispose();
         } catch (Exception ex) {

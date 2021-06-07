@@ -11,6 +11,7 @@ package library;
  */
 public final class user_type {
     private static String userType;
+    private static String userID;
 
     public static String getUserType() {
         return userType;
@@ -19,6 +20,16 @@ public final class user_type {
     public static void setUserType(String userType) {
         user_type.userType = userType;
     }
+
+    public static String getUserID() {
+        return userID;
+    }
+
+    public static void setUserID(String userID) {
+        user_type.userID = userID;
+    }
+    
+    
     
     
     
