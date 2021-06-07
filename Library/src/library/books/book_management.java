@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import library.Main_frame;
-import static library.Main_frame.myConn;
+import static library.Main_frame.c;
 
 /**
  *
@@ -29,7 +29,6 @@ public class book_management extends javax.swing.JFrame {
      * Creates new form book_management
      */
 //public book_management(ArrayList<String> s) {s=this.m;}
-
     public book_management() {
         initComponents();
     }
@@ -180,9 +179,9 @@ public class book_management extends javax.swing.JFrame {
         try {
             String Result = jTextField1.getText();
             if (!Result.isEmpty()) {
-                myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-                Statement myS = myConn.createStatement();
-                ResultSet myR = myS.executeQuery("select * from book where name like '" + Result + "'");
+                c = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+                Statement myS = c.createStatement();
+                ResultSet myR = myS.executeQuery("select * from book where lower(name) like '%" + Result + "%'");
                 while (myR.next()) {
                     flag = false;
                     System.out.println(myR.getString("id") + " , " + myR.getString("name"));
@@ -193,11 +192,10 @@ public class book_management extends javax.swing.JFrame {
                     m.add(3, myR.getString("type"));
                     m.add(4, myR.getString("stock"));
                     m.add(5, myR.getString("id"));
-                    ArrayList<String> s = new ArrayList<String>();
                     System.out.println(m.get(0) + " " + m.get(1) + " " + m.get(2) + " " + m.get(3) + " " + m.get(4));
 
                 }
-                myConn.close();
+                c.close();
                 if (flag) {
                     JOptionPane.showMessageDialog(this, "This book doesn't exist",
                             "Book", JOptionPane.WARNING_MESSAGE);
@@ -207,8 +205,9 @@ public class book_management extends javax.swing.JFrame {
                     this.dispose();
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Enter the Book name",
-                        "Book", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "book name field can't be empty",
+                        "Book", JOptionPane.ERROR_MESSAGE);
+                return;
             }
         } catch (Exception ex) {
             Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex);
@@ -216,12 +215,13 @@ public class book_management extends javax.swing.JFrame {
                     "Book", JOptionPane.WARNING_MESSAGE);
 
             try {
-                myConn.close();
+                c.close();
             } catch (SQLException ex1) {
                 Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
 
+        //create statement 
         //create statement 
 
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -237,17 +237,22 @@ public class book_management extends javax.swing.JFrame {
         try {
             String author;
             author = JOptionPane.showInputDialog("What is the author name? ");
-            if(author != null){
-            System.out.println(author);
-            Connection Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-            Statement mySt = Con.createStatement();  
-            mySt.executeUpdate("INSERT INTO author_name"+" VALUES (NULL,'"+author+"')");
-            JOptionPane.showMessageDialog(this, "Author Added",
-                "Author", JOptionPane.INFORMATION_MESSAGE  );
-            Con.close();
-            }else{
+            if (author.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Author name can't be empty",
+                        "Author", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (author != null) {
+                System.out.println(author);
+                Connection Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+                Statement mySt = Con.createStatement();
+                mySt.executeUpdate("INSERT INTO author_name" + " VALUES (NULL,'" + author + "')");
+                JOptionPane.showMessageDialog(this, "Author Added",
+                        "Author", JOptionPane.INFORMATION_MESSAGE);
+                Con.close();
+            } else {
                 JOptionPane.showMessageDialog(this, "Adding canceled",
-                "Author", JOptionPane.INFORMATION_MESSAGE  );
+                        "Author", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (SQLException ex) {
             Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex);
@@ -255,20 +260,25 @@ public class book_management extends javax.swing.JFrame {
            }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
- try {
+        try {
             String type;
             type = JOptionPane.showInputDialog("What is the book type? ");
-            if(type != null){
-            System.out.println(type);
-            Connection Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-            Statement mySt = Con.createStatement();  
-            mySt.executeUpdate("INSERT INTO booktype"+" VALUES (NULL,'"+type+"')");
-            JOptionPane.showMessageDialog(this, "Book Type Added",
-                "Book Type", JOptionPane.INFORMATION_MESSAGE  );
-            Con.close();
-            }else {
-             JOptionPane.showMessageDialog(this, "Adding canceled",
-                "Author", JOptionPane.INFORMATION_MESSAGE  );
+            if (type.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Book typr can't be empty",
+                        "Book Type", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (type != null) {
+                System.out.println(type);
+                Connection Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+                Statement mySt = Con.createStatement();
+                mySt.executeUpdate("INSERT INTO booktype" + " VALUES (NULL,'" + type + "')");
+                JOptionPane.showMessageDialog(this, "Book Type Added",
+                        "Book Type", JOptionPane.INFORMATION_MESSAGE);
+                Con.close();
+            } else {
+                JOptionPane.showMessageDialog(this, "Adding canceled",
+                        "Author", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (SQLException ex) {
             Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex);
@@ -277,42 +287,44 @@ public class book_management extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         try {
-            String[] names={};
+            String[] names = {};
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
             Statement a = con.createStatement();
             Statement b = con.createStatement();
             ResultSet f = a.executeQuery("SELECT * FROM book");
             ResultSet ct = b.executeQuery("SELECT COUNT(*) FROM book");
-            if(ct.next()){
-             names = new String[ct.getInt(1)];
+            if (ct.next()) {
+                names = new String[ct.getInt(1)];
             }
-            int i=0;
+            int i = 0;
             while (f.next()) {
                 System.out.println("name = " + f.getString("name"));
-                names[i]= f.getString("name");
+                names[i] = f.getString("name");
                 i++;
-                
+
             }
             String res = (String) JOptionPane.showInputDialog(null, "Which book you want to see its details?", "Books",
-         JOptionPane.PLAIN_MESSAGE, null, names, names[0]);
-            if(res!=null){
-            Statement c = con.createStatement();
-            ResultSet r = c.executeQuery("SELECT * FROM book where name ='"+res+"'");
-          ArrayList<String> x = new ArrayList<String>();
-          while (r.next()) {
+                    JOptionPane.PLAIN_MESSAGE, null, names, names[0]);
+            if (res != null) {
+                Statement c = con.createStatement();
+                ResultSet r = c.executeQuery("SELECT * FROM book where name ='" + res + "'");
+                ArrayList<String> x = new ArrayList<String>();
+                while (r.next()) {
                     x.add(0, r.getString("name"));
                     x.add(1, r.getString("description"));
                     x.add(2, r.getString("author"));
                     x.add(3, r.getString("type"));
                     x.add(4, r.getString("stock"));
                     x.add(5, r.getString("id"));
+                }
+                bookdetails d = new bookdetails(x);
+                d.setVisible(true);
+                this.dispose();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Canceled",
+                        "Books", JOptionPane.INFORMATION_MESSAGE);
             }
-        bookdetails d = new bookdetails(x);
-        d.setVisible(true);
-        this.dispose();            
-            
-            }else{ JOptionPane.showMessageDialog(this, "Canceled",
-                "Books", JOptionPane.INFORMATION_MESSAGE  );}
         } catch (SQLException ex) {
             Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex);
         }

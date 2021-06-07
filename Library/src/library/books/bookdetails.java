@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import static library.Main_frame.myConn;
+import static library.Main_frame.c;
 
 /**
  *
@@ -239,13 +239,13 @@ String type;
                JOptionPane.QUESTION_MESSAGE);
             if(result == JOptionPane.YES_OPTION){
             try {
-                myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-                Statement myS = myConn.createStatement();
+                c = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+                Statement myS = c.createStatement();
                 String SQL= "delete from book where id = "+s.get(5);
                 myS.execute(SQL);
                 JOptionPane.showMessageDialog(this, "Book deleted",
                     "Book", JOptionPane.WARNING_MESSAGE  );
-                myConn.close();
+                c.close();
 
                 new book_management().setVisible(true);
                 this.dispose();

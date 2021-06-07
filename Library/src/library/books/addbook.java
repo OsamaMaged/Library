@@ -9,43 +9,43 @@ import javax.swing.JOptionPane;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import library.Main_frame;
-import static library.Main_frame.myConn;
 
 /**
  *
  * @author osama
  */
 public class addbook extends javax.swing.JFrame {
-Connection Conn;
-Statement myS;
-public int nam,ty;
+
+    Connection Conn;
+    Statement myS;
+    public int nam, ty;
+
     //Statement mySt = conn.createStatement();
     // Library lib = new Library(conn,st);
     /**
      * Creates new form addbook
      */
-    
+
     public addbook() {
         initComponents();
         try {
-                Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-                Statement myStat1 = Conn.createStatement();
-                Statement myStat2 = Conn.createStatement();
-                ResultSet r1 = myStat1.executeQuery("SELECT * FROM author_name");
-                ResultSet r2 = myStat2.executeQuery("SELECT * FROM booktype");
-                 while (r1.next()) {
-               jComboBox1.addItem(r1.getString("name"));
-                }
-                  while (r2.next()) {
-                  jComboBox2.addItem(r2.getString("type"));
-                }
-                Conn.close();
-            } catch (Exception ex) {
-                Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(this, "Error loading database",
-                    "Book", JOptionPane.WARNING_MESSAGE  );
+            Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+            Statement myStat1 = Conn.createStatement();
+            Statement myStat2 = Conn.createStatement();
+            ResultSet r1 = myStat1.executeQuery("SELECT * FROM author_name");
+            ResultSet r2 = myStat2.executeQuery("SELECT * FROM booktype");
+            while (r1.next()) {
+                jComboBox1.addItem(r1.getString("name"));
             }
+            while (r2.next()) {
+                jComboBox2.addItem(r2.getString("type"));
+            }
+            Conn.close();
+        } catch (Exception ex) {
+            Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error loading database",
+                    "Book", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     /**
@@ -212,10 +212,10 @@ public int nam,ty;
                 return;
             }
         }
-        if (name.isEmpty() || desc.isEmpty() ||  s.isEmpty()) {
+        if (name.isEmpty() || desc.isEmpty() || s.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter all values",
                     "Book", JOptionPane.WARNING_MESSAGE);
-                return;
+            return;
         } else {
             try {
                 Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
@@ -239,40 +239,40 @@ public int nam,ty;
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-    try {
-        String author= jComboBox1.getSelectedItem().toString();
-                System.out.println(author);
-        Connection Co = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-         Statement myStat3 = Co.createStatement();
-        ResultSet f = myStat3.executeQuery("SELECT * FROM author_name WHERE name = '" + author+"'");
-        while (f.next()) {
-               author=f.getString("id");
-               nam=Integer.parseInt(author);
-                }
-        System.out.println(nam);
-        Co.close();
-    } catch (SQLException ex) {
-        Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
-    }
+        try {
+            String author = jComboBox1.getSelectedItem().toString();
+            System.out.println(author);
+            Connection Co = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+            Statement myStat3 = Co.createStatement();
+            ResultSet f = myStat3.executeQuery("SELECT * FROM author_name WHERE name = '" + author + "'");
+            while (f.next()) {
+                author = f.getString("id");
+                nam = Integer.parseInt(author);
+            }
+            System.out.println(nam);
+            Co.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-       try {
-        String type= jComboBox2.getSelectedItem().toString();
-                System.out.println(type);
-        Connection Co = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-         Statement myStat3 = Co.createStatement();
-        ResultSet f = myStat3.executeQuery("SELECT * FROM booktype WHERE type = '" + type+"'");
-        while (f.next()) {
-               type=f.getString("id");
-               ty=Integer.parseInt(type);
-                }
-        System.out.println(ty);
-        Co.close();
-    } catch (SQLException ex) {
-        Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
-    }
+        try {
+            String type = jComboBox2.getSelectedItem().toString();
+            System.out.println(type);
+            Connection Co = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+            Statement myStat3 = Co.createStatement();
+            ResultSet f = myStat3.executeQuery("SELECT * FROM booktype WHERE type = '" + type + "'");
+            while (f.next()) {
+                type = f.getString("id");
+                ty = Integer.parseInt(type);
+            }
+            System.out.println(ty);
+            Co.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
 
     }//GEN-LAST:event_jComboBox2ActionPerformed
