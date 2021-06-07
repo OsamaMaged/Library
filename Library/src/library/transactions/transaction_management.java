@@ -48,6 +48,7 @@ public class transaction_management extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         searchTransaction = new javax.swing.JTextField();
         searchTransactionBtn = new javax.swing.JButton();
+        viewAllTransactionsBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,6 +81,13 @@ public class transaction_management extends javax.swing.JFrame {
             }
         });
 
+        viewAllTransactionsBtn.setText("View All Transactions");
+        viewAllTransactionsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewAllTransactionsBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -101,7 +109,8 @@ public class transaction_management extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(searchTransaction, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(searchTransactionBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(searchTransactionBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(viewAllTransactionsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
@@ -111,8 +120,10 @@ public class transaction_management extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(viewAllTransactionsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -175,10 +186,9 @@ public class transaction_management extends javax.swing.JFrame {
                 }
 
             }
-
             //Show results in a new table window
             searchTransactionResults sTR = new searchTransactionResults();
-            sTR.getResultFromUserName(transactions);
+            sTR.fillTransactionsTable(transactions);
             sTR.setVisible(true);
             this.dispose();
         } catch (Exception e) {
@@ -187,19 +197,40 @@ public class transaction_management extends javax.swing.JFrame {
 
     }//GEN-LAST:event_searchTransactionBtnActionPerformed
 
+    private void viewAllTransactionsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAllTransactionsBtnActionPerformed
+        try {
+            String sql = "Select * from transaction";
+            st = c.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                transaction = new Transaction(rs.getString("id"), rs.getString("date"), rs.getString("user_id"), rs.getString("transactiondetails_id"));
+                transactions.add(transaction);
+            }
+            for (int i = 0; i < transactions.size(); i++) {
+                getForeignData(transactions.get(i));
+            }
+            searchTransactionResults sTR = new searchTransactionResults();
+            sTR.fillTransactionsTable(transactions);
+            sTR.setVisible(true);
+            this.dispose();
+        } catch (Exception e) {
+            System.out.println("failed to fetch all results");
+        }
+    }//GEN-LAST:event_viewAllTransactionsBtnActionPerformed
+
     public void getForeignData(Transaction t) {
         try {
+
             String sql = "SELECT name from user where id='" + t.getUserId() + "'";
             rs = st.executeQuery(sql);
             rs.next();
             t.setUserName(rs.getString("name"));
-            rs.close();
 
             sql = "Select due_date from transactiondetails where id='" + t.getTransactionDetailsID() + "'";
             rs = st.executeQuery(sql);
             rs.next();
             t.setReturnDate(rs.getString("due_date"));
-            
+
         } catch (Exception e) {
             System.out.println("failed to add user name or due date");
         }
@@ -248,5 +279,6 @@ public class transaction_management extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField searchTransaction;
     private javax.swing.JButton searchTransactionBtn;
+    private javax.swing.JButton viewAllTransactionsBtn;
     // End of variables declaration//GEN-END:variables
 }

@@ -158,7 +158,7 @@ public class searchTransactionResults extends javax.swing.JFrame {
     }
 
     //Show results in a table
-    public void getResultFromUserName(ArrayList<Transaction> transactions) {
+    public void fillTransactionsTable(ArrayList<Transaction> transactions) {
         this.transactions = transactions;
 
         //put results in a table
@@ -174,7 +174,7 @@ public class searchTransactionResults extends javax.swing.JFrame {
             model.addRow(row);
         }
     }
-
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
