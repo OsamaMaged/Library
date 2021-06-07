@@ -8,6 +8,7 @@ package library.transactions;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import library.Database_connection;
 
@@ -21,10 +22,13 @@ public class transaction_details extends javax.swing.JFrame {
     ResultSet rs = null;
     Statement st = null;
     Transaction transaction;
+    ArrayList<String> bookId;
+    ArrayList<String> userId;
 
     public transaction_details() {
         initComponents();
         c = Database_connection.connect();
+        fillComboBox();
     }
 
     /**
@@ -41,15 +45,13 @@ public class transaction_details extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         idTextField = new javax.swing.JTextField();
         dateTextField = new javax.swing.JTextField();
-        userIdTextField = new javax.swing.JTextField();
-        bookIdTextField = new javax.swing.JTextField();
-        bookNameTextField = new javax.swing.JTextField();
         updateButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        bookName = new javax.swing.JComboBox<>();
+        userName = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,15 +62,11 @@ public class transaction_details extends javax.swing.JFrame {
 
         jLabel3.setText("date:");
 
-        jLabel4.setText("user id:");
+        jLabel4.setText("user name:");
 
-        jLabel5.setText("book id:");
-
-        jLabel6.setText("book name:");
+        jLabel5.setText("book name:");
 
         idTextField.setEditable(false);
-
-        bookNameTextField.setEditable(false);
 
         updateButton.setText("Update");
         updateButton.addActionListener(new java.awt.event.ActionListener() {
@@ -77,7 +75,7 @@ public class transaction_details extends javax.swing.JFrame {
             }
         });
 
-        deleteButton.setText("Delete");
+        deleteButton.setText("Return Book");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
@@ -99,31 +97,27 @@ public class transaction_details extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(dateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(bookNameTextField))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel5)
+                                        .addComponent(jLabel4))
+                                    .addComponent(jLabel3))
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(userIdTextField)
-                                    .addComponent(bookIdTextField)))))
+                                    .addComponent(dateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(bookName, 0, 209, Short.MAX_VALUE)
+                                        .addComponent(userName, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addComponent(jButton1)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(81, 81, 81)
+                        .addGap(107, 107, 107)
                         .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -149,18 +143,14 @@ public class transaction_details extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(dateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(userIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(bookIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bookName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(bookNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(userName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateButton)
                     .addComponent(deleteButton))
@@ -179,16 +169,15 @@ public class transaction_details extends javax.swing.JFrame {
 
         String transactionId = idTextField.getText();
         String date = dateTextField.getText();
-        String bookId = bookIdTextField.getText();
-        String userId = userIdTextField.getText();
+        int bookIndex = this.bookName.getSelectedIndex();
+        int userIndex = this.userName.getSelectedIndex();
+
+        String bookID = this.bookId.get(bookIndex);
+        String userID = this.userId.get(userIndex);
 
         //Check that input values are of valid format
-        if (date.isEmpty() || userId.isEmpty() || bookId.isEmpty()) {
+        if (date.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No emtpy fields are allowed",
-                    "Transaction", JOptionPane.ERROR_MESSAGE);
-            return;
-        } else if (!bookId.matches("[0-9]+") || !userId.matches("[0-9]+")) {
-            JOptionPane.showMessageDialog(this, "book and user IDs must be integers",
                     "Transaction", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -199,10 +188,10 @@ public class transaction_details extends javax.swing.JFrame {
             String sql = "UPDATE transaction set date = '" + date + "' where id = '" + transactionId + "'";
             st.executeUpdate(sql);
 
-            sql = "UPDATE transaction set user_id = '" + userId + "' where id = '" + transactionId + "'";
+            sql = "UPDATE transaction set user_id = '" + userID + "' where id = '" + transactionId + "'";
             st.executeUpdate(sql);
 
-            sql = "UPDATE transactiondetails set book_id = '" + bookId + "' where id = '" + transaction.getTransactionDetailsID() + "'";
+            sql = "UPDATE transactiondetails set book_id = '" + bookID + "' where id = '" + transaction.getTransactionDetailsID() + "'";
             st.executeUpdate(sql);
 
             JOptionPane.showMessageDialog(this, "Transaction updated successfully",
@@ -278,7 +267,7 @@ public class transaction_details extends javax.swing.JFrame {
         this.transaction = transaction;
         idTextField.setText(transaction.getId());
         dateTextField.setText(transaction.getDate());
-        userIdTextField.setText(transaction.getUserId());
+        userName.setSelectedItem(transaction.getUserName());
         getForeignData(transaction);
 
     }
@@ -292,23 +281,52 @@ public class transaction_details extends javax.swing.JFrame {
             rs = st.executeQuery(sql);
             rs.next();
             String bookId = rs.getString("book_id");
-            bookIdTextField.setText(bookId);
 
             //get book name from book id
             sql = "SELECT name FROM book where id = '" + bookId + "'";
             rs = st.executeQuery(sql);
             rs.next();
             String bookName = rs.getString("name");
-            bookNameTextField.setText(bookName);
+            this.bookName.setSelectedItem(bookName);
 
         } catch (Exception e) {
             System.out.println("failed to get foreign data");
         }
     }
 
+    public void fillComboBox() {
+        try {
+            st = c.createStatement();
+            String bookName;
+            String userName;
+            bookId = new ArrayList<>();
+            userId = new ArrayList<>();
+
+            String sql = "SELECT * from book";
+            rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                bookName = rs.getString("name");
+                this.bookName.addItem(bookName);
+                bookId.add(rs.getString("id")); //put all id in array to be fetched later without needing to make another query
+            }
+
+            sql = "SELECT * from user";
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                userName = rs.getString("name");
+                this.userName.addItem(userName);
+                userId.add(rs.getString("id")); //put all id in array to be fetched later without needing to make another query
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error in fetching names");
+        }
+
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField bookIdTextField;
-    private javax.swing.JTextField bookNameTextField;
+    private javax.swing.JComboBox<String> bookName;
     private javax.swing.JTextField dateTextField;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField idTextField;
@@ -318,8 +336,7 @@ public class transaction_details extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JButton updateButton;
-    private javax.swing.JTextField userIdTextField;
+    private javax.swing.JComboBox<String> userName;
     // End of variables declaration//GEN-END:variables
 }
