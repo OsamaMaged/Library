@@ -43,7 +43,7 @@
                   <Group type="102" attributes="0">
                       <Component id="searchTransaction" min="-2" pref="186" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jButton2" min="-2" pref="161" max="-2" attributes="0"/>
+                      <Component id="searchTransactionBtn" min="-2" pref="161" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
@@ -62,7 +62,7 @@
               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jButton2" max="32767" attributes="0"/>
+                  <Component id="searchTransactionBtn" max="32767" attributes="0"/>
                   <Component id="searchTransaction" pref="39" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
@@ -97,7 +97,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Search by User ID"/>
+        <Property name="text" type="java.lang.String" value="Search by User Name"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="searchTransaction">
@@ -108,12 +108,12 @@
         <Property name="toolTipText" type="java.lang.String" value="Enter book name"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="searchTransactionBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Search transaction"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchTransactionBtnActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

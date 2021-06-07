@@ -10,9 +10,27 @@ package library.transactions;
  * @author Ashrakat
  */
 public class Transaction {
-      String id;
+    String id;
     String date;
     String userId;
+    String userName;
+    String returnDate;
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setReturnDate(String returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getReturnDate() {
+        return returnDate;
+    }
     String transactionDetailsID;
 
     public Transaction(String id, String date, String userId, String transactionDetailsID) {

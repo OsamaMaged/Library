@@ -5,8 +5,9 @@
  */
 package library.transactions;
 
-import library.transactions.transaction_management;
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import library.Database_connection;
@@ -20,16 +21,22 @@ public class addTransaction extends javax.swing.JFrame {
     Connection c;
     ResultSet rs = null;
     Statement st = null;
+    LocalDate today;
     String date;
+    ArrayList<String> bookId;
+    ArrayList<String> userId;
 
     /**
      * Creates new form transaction_management
      */
     public addTransaction() {
         initComponents();
+        
+        today = LocalDate.now();
         date = new Date().toString();
         currentDate.setText(date);
         c = Database_connection.connect();
+        fillComboBox();
     }
 
     /**
@@ -45,11 +52,11 @@ public class addTransaction extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         currentDate = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        bookID = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        userID = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        addTransactionBtn = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
+        bookName = new javax.swing.JComboBox<>();
+        userName = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,20 +65,14 @@ public class addTransaction extends javax.swing.JFrame {
 
         jLabel2.setText("Date:");
 
-        jLabel3.setText("Book ID:");
+        jLabel3.setText("Book name:");
 
-        bookID.addActionListener(new java.awt.event.ActionListener() {
+        jLabel4.setText("user name:");
+
+        addTransactionBtn.setText("Add");
+        addTransactionBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bookIDActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setText("user ID:");
-
-        jButton1.setText("Add");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addTransactionBtnActionPerformed(evt);
             }
         });
 
@@ -82,38 +83,39 @@ public class addTransaction extends javax.swing.JFrame {
             }
         });
 
+        bookName.setMaximumRowCount(10);
+
+        userName.setMaximumRowCount(10);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(47, 47, 47)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(currentDate)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(currentDate))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(userID, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(bookID, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(userName, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(bookName, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(173, 173, 173)
-                        .addComponent(jButton1))
+                        .addComponent(addTransactionBtn))
                     .addComponent(backButton))
-                .addGap(0, 172, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(112, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(87, 87, 87))
         );
@@ -130,45 +132,34 @@ public class addTransaction extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(bookID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(bookName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(userID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(userName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(addTransactionBtn)
                 .addGap(56, 56, 56))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bookIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bookIDActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String bookID = this.bookID.getText();
-        String userID = this.userID.getText();
-
-        //Check that input values are of valid format
-        if (bookID.isEmpty() || userID.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please Enter all values",
-                    "Transaction", JOptionPane.ERROR_MESSAGE);
-            return;
-        } else if (!bookID.matches("[0-9]+") || !userID.matches("[0-9]+")) {
-            JOptionPane.showMessageDialog(this, "All values must be integers",
-                    "Transaction", JOptionPane.ERROR_MESSAGE);
-        }
-        ////////////////////////////////////////////////
-
+    private void addTransactionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTransactionBtnActionPerformed
+        int bookIndex = this.bookName.getSelectedIndex();
+        int userIndex = this.userName.getSelectedIndex();
+        
+        String bookID = this.bookId.get(bookIndex);
+        String userID = this.userId.get(userIndex);
+        String returnDate = today.plusWeeks(2).toString(); //To change when add user types
+        
         //Insert the new transaction
         try {
 
             st = c.createStatement();
 
             //insert borrowed book ID into transaction detail
-            String sql = "INSERT INTO transactiondetails" + " VALUES (NULL,'" + bookID + "')";
+            String sql = "INSERT INTO transactiondetails" + " VALUES (NULL,'" + bookID + "','"+returnDate+"')";
             st.executeUpdate(sql, st.RETURN_GENERATED_KEYS);
             rs = st.getGeneratedKeys();
             rs.next();
@@ -178,25 +169,58 @@ public class addTransaction extends javax.swing.JFrame {
 
             //insert transaction detail into transaction and link it to the user making this transaction
             sql = "INSERT INTO transaction" + " VALUES (NULL,'" + date + "', '" + transactionDetailsId + "', '" + userID + "')";
-            st.executeUpdate(sql);
+            st.executeUpdate(sql, st.RETURN_GENERATED_KEYS);
+            rs = st.getGeneratedKeys();
+            rs.next();
+            
+            int transactionID = rs.getInt(1);
             
 
-            this.bookID.setText("");
-            this.userID.setText("");
-            
+
             //show success message after insertion
-            JOptionPane.showMessageDialog(this, "Transaction added successfully",
+            JOptionPane.showMessageDialog(this, "Transaction added successfully \n Transaction ID: "+transactionID+"\n Return Date: "+returnDate+"",
                     "Add Transaction", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "\r Transaction not added \n Make sure that book & user id already exist in the DB",
                     "Transaction", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_addTransactionBtnActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         new transaction_management().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
+
+    public void fillComboBox() {
+        try {
+            st = c.createStatement();
+            String bookName;
+            String userName;
+            bookId = new ArrayList<>();
+            userId = new ArrayList<>();
+            
+            String sql = "SELECT * from book";
+            rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                bookName = rs.getString("name");
+                this.bookName.addItem(bookName);
+                bookId.add(rs.getString("id")); //put all id in array to be fetched later without needing to make another query
+            }
+            
+            sql = "SELECT * from user";
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                userName = rs.getString("name");
+                this.userName.addItem(userName);
+                userId.add(rs.getString("id")); //put all id in array to be fetched later without needing to make another query
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error in fetching names");
+        }
+
+    }
 
     /**
      * @param args the command line arguments
@@ -216,14 +240,14 @@ public class addTransaction extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addTransactionBtn;
     private javax.swing.JButton backButton;
-    private javax.swing.JTextField bookID;
+    private javax.swing.JComboBox<String> bookName;
     private javax.swing.JLabel currentDate;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField userID;
+    private javax.swing.JComboBox<String> userName;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,13 +5,16 @@
  */
 package library.transactions;
 
+import java.sql.Connection;
 import library.transactions.transaction_management;
 import library.transactions.transaction_details;
 import library.transactions.Transaction;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import library.Database_connection;
 
 /**
  *
@@ -20,10 +23,14 @@ import javax.swing.table.TableModel;
 public class searchTransactionResults extends javax.swing.JFrame {
 
     public ResultSet rs;
+    Connection c;
+    Statement st = null;
+    Transaction transaction;
     ArrayList<Transaction> transactions = new ArrayList<>();
 
     public searchTransactionResults() {
         initComponents();
+        c = Database_connection.connect();
 
     }
 
@@ -47,14 +54,14 @@ public class searchTransactionResults extends javax.swing.JFrame {
 
             },
             new String [] {
-                "id", "date", "user id", "transaction details id"
+                "transaction id", "user id", "user name", "borrow date", "due date"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -149,32 +156,25 @@ public class searchTransactionResults extends javax.swing.JFrame {
             }
         });
     }
-    
+
     //Show results in a table
-    public void getResult(ResultSet rs) {
-        this.rs = rs;
-        Transaction transaction;
-        try {
-            while (rs.next()) {
-                //get results as transaction objects
-                transaction = new Transaction(rs.getString("id"), rs.getString("date"), rs.getString("user_id"), rs.getString("transactiondetails_id"));
-                transactions.add(transaction);
-            }
-        } catch (Exception e) {
-            System.out.println("Failed to show search results");
-        }
+    public void getResultFromUserName(ArrayList<Transaction> transactions) {
+        this.transactions = transactions;
 
         //put results in a table
         DefaultTableModel model = (DefaultTableModel) resultsTable.getModel();
-        Object[] row = new Object[4];
+        Object[] row = new Object[5];
         for (int i = 0; i < transactions.size(); i++) {
-        row[0] = transactions.get(i).getId();
-        row[1] = transactions.get(i).getDate();
-        row[2] = transactions.get(i).getUserId();
-        row[3] = transactions.get(i).getTransactionDetailsID();
-        model.addRow(row);
+            row[0] = transactions.get(i).getId();
+            row[1] = transactions.get(i).getUserId();
+            row[2] = transactions.get(i).getUserName();
+            row[3] = transactions.get(i).getDate();
+            row[4] = transactions.get(i).getReturnDate();
+
+            model.addRow(row);
         }
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -182,5 +182,3 @@ public class searchTransactionResults extends javax.swing.JFrame {
     private javax.swing.JTable resultsTable;
     // End of variables declaration//GEN-END:variables
 }
-
-
