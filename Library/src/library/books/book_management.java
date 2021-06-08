@@ -73,11 +73,6 @@ public class book_management extends javax.swing.JFrame {
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jTextField1.setToolTipText("Enter book name");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
 
         jButton3.setText("Back");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -169,46 +164,47 @@ public class book_management extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         m = new ArrayList<String>();
         boolean flag = true;
         try {
             String Result = jTextField1.getText();
-            if (!Result.isEmpty()) {
-                c = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-                Statement myS = c.createStatement();
-                ResultSet myR = myS.executeQuery("select * from book where lower(name) like '%" + Result + "%'");
-                while (myR.next()) {
-                    flag = false;
-                    System.out.println(myR.getString("id") + " , " + myR.getString("name"));
-
-                    m.add(0, myR.getString("name"));
-                    m.add(1, myR.getString("description"));
-                    m.add(2, myR.getString("author"));
-                    m.add(3, myR.getString("type"));
-                    m.add(4, myR.getString("stock"));
-                    m.add(5, myR.getString("id"));
-                    System.out.println(m.get(0) + " " + m.get(1) + " " + m.get(2) + " " + m.get(3) + " " + m.get(4));
-
-                }
-                c.close();
-                if (flag) {
-                    JOptionPane.showMessageDialog(this, "This book doesn't exist",
-                            "Book", JOptionPane.WARNING_MESSAGE);
-                } else {
-                    searchbook b = new searchbook(m);
-                    b.setVisible(true);
-                    this.dispose();
-                }
-            } else {
+            if (Result.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "book name field can't be empty",
                         "Book", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+            Statement st = c.createStatement();
+            ResultSet r = st.executeQuery("select * from book where lower(name) like '%" + Result + "%'");
+            String authorID = null;
+            String bookTypeID = null;
+            while (r.next()) {
+                m.add(0, r.getString("name"));
+                m.add(1, r.getString("description"));
+                authorID = r.getString("author");
+                bookTypeID = r.getString("type");
+                m.add(2, r.getString("author"));
+                m.add(3, r.getString("type"));
+                m.add(4, r.getString("stock"));
+                m.add(5, r.getString("id"));
+            }
+
+            String sql = "Select name from author_name where id ='" + authorID + "'";
+            r = st.executeQuery(sql);
+            while (r.next()) {
+                m.add(6, r.getString("name"));
+            }
+            sql = "Select type from booktype where id ='" + bookTypeID + "'";
+            r = st.executeQuery(sql);
+            while (r.next()) {
+                m.add(7, r.getString("type"));
+            }
+
+            searchbook b = new searchbook(m);
+            b.setVisible(true);
+            this.dispose();
+
         } catch (Exception ex) {
             Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "This book doesn't exist",
@@ -243,7 +239,6 @@ public class book_management extends javax.swing.JFrame {
                 return;
             }
             if (author != null) {
-                System.out.println(author);
                 Connection Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
                 Statement mySt = Con.createStatement();
                 mySt.executeUpdate("INSERT INTO author_name" + " VALUES (NULL,'" + author + "')");
@@ -269,7 +264,6 @@ public class book_management extends javax.swing.JFrame {
                 return;
             }
             if (type != null) {
-                System.out.println(type);
                 Connection Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
                 Statement mySt = Con.createStatement();
                 mySt.executeUpdate("INSERT INTO booktype" + " VALUES (NULL,'" + type + "')");
@@ -298,7 +292,6 @@ public class book_management extends javax.swing.JFrame {
             }
             int i = 0;
             while (f.next()) {
-                System.out.println("name = " + f.getString("name"));
                 names[i] = f.getString("name");
                 i++;
 
@@ -306,18 +299,35 @@ public class book_management extends javax.swing.JFrame {
             String res = (String) JOptionPane.showInputDialog(null, "Which book you want to see its details?", "Books",
                     JOptionPane.PLAIN_MESSAGE, null, names, names[0]);
             if (res != null) {
-                Statement c = con.createStatement();
-                ResultSet r = c.executeQuery("SELECT * FROM book where name ='" + res + "'");
+                Statement st = con.createStatement();
+                ResultSet r = st.executeQuery("SELECT * FROM book where name ='" + res + "'");
                 ArrayList<String> x = new ArrayList<String>();
+                String authorID = null;
+                String bookTypeID = null;
                 while (r.next()) {
                     x.add(0, r.getString("name"));
                     x.add(1, r.getString("description"));
+                    authorID = r.getString("author");
+                    bookTypeID = r.getString("type");
                     x.add(2, r.getString("author"));
                     x.add(3, r.getString("type"));
                     x.add(4, r.getString("stock"));
                     x.add(5, r.getString("id"));
                 }
+
+                String sql = "Select name from author_name where id ='" + authorID + "'";
+                r = st.executeQuery(sql);
+                while (r.next()) {
+                    x.add(6, r.getString("name"));
+                }
+                sql = "Select type from booktype where id ='" + bookTypeID + "'";
+                r = st.executeQuery(sql);
+                while (r.next()) {
+                    x.add(7, r.getString("type"));
+                }
+
                 bookdetails d = new bookdetails(x);
+
                 d.setVisible(true);
                 this.dispose();
 

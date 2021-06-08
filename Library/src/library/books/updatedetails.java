@@ -7,10 +7,12 @@ package library.books;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import library.Main_frame;
 
@@ -19,8 +21,10 @@ import library.Main_frame;
  * @author osama
  */
 public class updatedetails extends javax.swing.JFrame {
+
     ArrayList<String> s = new ArrayList<String>();
     String id;
+
     /**
      * Creates new form updatedetails
      */
@@ -29,10 +33,8 @@ public class updatedetails extends javax.swing.JFrame {
         this.s.addAll(m);
         jTextField1.setText(s.get(0));
         jTextField2.setText(s.get(1));
-        jTextField3.setText(s.get(2));
-        jTextField4.setText(s.get(3));
         jTextField5.setText(s.get(4));
-        id=s.get(5);
+        id = s.get(5);
     }
 
     private updatedetails() {
@@ -53,8 +55,6 @@ public class updatedetails extends javax.swing.JFrame {
         cancel = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         save = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -62,6 +62,8 @@ public class updatedetails extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        authorNameCombobox = new javax.swing.JComboBox<>();
+        typeComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,10 +87,6 @@ public class updatedetails extends javax.swing.JFrame {
         jLabel1.setText("Book details");
 
         jTextField2.setToolTipText("Book details");
-
-        jTextField3.setToolTipText("Author name");
-
-        jTextField4.setToolTipText("Book type");
 
         jTextField5.setToolTipText("Book Quantity");
 
@@ -135,19 +133,19 @@ public class updatedetails extends javax.swing.JFrame {
                         .addGap(57, 57, 57)
                         .addComponent(jLabel1)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(save, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(cancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(103, 103, 103))))
+                            .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                            .addComponent(authorNameCombobox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(typeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(101, 101, 101))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,7 +155,7 @@ public class updatedetails extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -167,14 +165,14 @@ public class updatedetails extends javax.swing.JFrame {
                             .addComponent(jLabel3))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)))
+                            .addComponent(jLabel4)
+                            .addComponent(authorNameCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
@@ -188,50 +186,72 @@ public class updatedetails extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
-    this.dispose();
+        this.dispose();
     }//GEN-LAST:event_cancelActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         String name = jTextField1.getText();
         String desc = jTextField2.getText();
-        String author = jTextField3.getText();
-        String type = jTextField4.getText();
-        String s = jTextField5.getText();
-        if(!s.isEmpty())
-        {try {int stock = Integer.parseInt(s);}catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Please Enter an integer value",
-                               "Book", JOptionPane.WARNING_MESSAGE  );
-            return;
-        }}
-        if(name.isEmpty()||desc.isEmpty()||author.isEmpty()||type.isEmpty()|| s.isEmpty())
-        {
-            JOptionPane.showMessageDialog(this, "Please Enter all values",
-                               "Book", JOptionPane.WARNING_MESSAGE  );
-        }else{
+        String author = authorNameCombobox.getSelectedItem().toString();
+        String type = typeComboBox.getSelectedItem().toString();
+        String stock = jTextField5.getText();
+        if (!stock.isEmpty()) {
             try {
-                 Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-                 Statement myStat = Conn.createStatement();
-                myStat.execute("update book"+" set name ='"+name+"',description = '"+ desc+"',author = '"+ author+"',"
-                        + "type = '"+type+"',stock = "+ s+" where id ="+id);
-               
-                Conn.close();
-            } catch (Exception ex) {
-                Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(this, "Error",
-                               "Book", JOptionPane.WARNING_MESSAGE  );
+                int s = Integer.parseInt(stock);
+                if (s < 0) {
+                    JOptionPane.showMessageDialog(this, "Stock must be a positive value",
+                            "Book", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Stock must be an integer value",
+                        "Book", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        JOptionPane.showMessageDialog(this, "Book Updated",
-                               "Book", JOptionPane.INFORMATION_MESSAGE  );
-        Main_frame f=new Main_frame();
-        f.setVisible(true);
-        this.dispose();
+        }
+        if (name.isEmpty() || desc.isEmpty() || stock.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Enter all values",
+                    "Book", JOptionPane.ERROR_MESSAGE);
+            return;
+        } else {
+            try {
+                Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+                Statement myStat = Conn.createStatement();
+                ResultSet rs = null;
+
+                //get author ID from author name
+                String sql = "Select id from author_name where name = '" + author + "'";
+                rs = myStat.executeQuery(sql);
+                String authorID = null;
+                while (rs.next()) {
+                    authorID = rs.getString("id");
+                }
+
+                sql = "Select id from booktype where type = '" + type + "'";
+                rs = myStat.executeQuery(sql);
+                String bookTypeID = null;
+                while (rs.next()) {
+                    bookTypeID = rs.getString("id");
+                }
+
+                myStat.execute("update book" + " set name ='" + name + "',description = '" + desc + "',author = '" + authorID + "',"
+                        + "type = '" + bookTypeID + "',stock = " + stock + " where id =" + id);
+                
+                
+                JOptionPane.showMessageDialog(this, "Book Updated Successfully",
+                    "Book", JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (Exception ex) {
+                 JOptionPane.showMessageDialog(this, "Something went wrong",
+                    "Book", JOptionPane.INFORMATION_MESSAGE);
+            }
+            
         }
     }//GEN-LAST:event_saveActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-book_management b = new book_management();
-b.setVisible(true);
-this.dispose();
+        book_management b = new book_management();
+        b.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -270,6 +290,7 @@ this.dispose();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> authorNameCombobox;
     private javax.swing.JButton cancel;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -280,9 +301,27 @@ this.dispose();
     private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JButton save;
+    private javax.swing.JComboBox<String> typeComboBox;
     // End of variables declaration//GEN-END:variables
+
+    public void fillComboBox(String item, String comboBoxName) {
+
+        switch (comboBoxName) {
+            case "author name":
+                this.authorNameCombobox.addItem(item);
+                break;
+            case "book type":
+                this.typeComboBox.addItem(item);
+                break;
+        }
+    }
+
+    public void showComboBoxData() {
+        authorNameCombobox.setSelectedItem(s.get(6));
+        System.out.println(s.get(6));
+        System.out.println(s.get(7));
+        typeComboBox.setSelectedItem(s.get(7));
+    }
 }

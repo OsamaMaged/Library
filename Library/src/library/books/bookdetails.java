@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import library.Database_connection;
 import static library.Main_frame.c;
 
 /**
@@ -22,38 +23,50 @@ import static library.Main_frame.c;
  * @author osama
  */
 public class bookdetails extends javax.swing.JFrame {
-public ArrayList<String> s=new ArrayList<String>();
-String name;
-String type;
-/**
+
+    Connection c;
+    Statement st;
+    ResultSet rs;
+
+    public ArrayList<String> s = new ArrayList<String>();
+    String authorName;
+    String bookType;
+
+    /**
      * Creates new form bookdetails
      */
 //book_management book =new book_management();
-    public bookdetails(ArrayList<String>m) {
-    try {
+    public bookdetails(ArrayList<String> m) {
         initComponents();
-        s.addAll(m);
-        Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-        Statement myStat1 = Conn.createStatement();
-        Statement myStat2 = Conn.createStatement();
-        ResultSet r1 = myStat1.executeQuery("SELECT * FROM author_name where id = '"+s.get(2)+"'");
-        ResultSet r2 = myStat2.executeQuery("SELECT * FROM booktype where id = '"+s.get(3)+"'");
-        while (r1.next()) {
-            name=(r1.getString("name"));
+        c = Database_connection.connect();
+        fillComboBox();
+        try {
+
+            s.addAll(m);
+            Statement myStat1 = c.createStatement();
+            Statement myStat2 = c.createStatement();
+            ResultSet r1 = myStat1.executeQuery("SELECT * FROM author_name where id = '" + s.get(2) + "'");
+            ResultSet r2 = myStat2.executeQuery("SELECT * FROM booktype where id = '" + s.get(3) + "'");
+            while (r1.next()) {
+                authorName = (r1.getString("name"));
+            }
+            while (r2.next()) {
+                bookType = (r2.getString("type"));
+            }
+            jTextField1.setText(s.get(0));
+            jTextField1.setEditable(false);
+            jTextField2.setText(s.get(1));
+            jTextField2.setEditable(false);
+            authorNameCombobox.setSelectedItem(authorName);
+            authorNameCombobox.setEnabled(false);
+            bookTypeComboBox.setSelectedItem(bookType);
+            bookTypeComboBox.setEnabled(false);
+            jTextField5.setText(s.get(4));
+            jTextField5.setEditable(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(bookdetails.class.getName()).log(Level.SEVERE, null, ex);
         }
-        while (r2.next()) {
-            type=(r2.getString("type"));
-        }
-        jTextField1.setText(s.get(0));jTextField1.setEditable(false);
-        jTextField2.setText(s.get(1));jTextField2.setEditable(false);
-        jTextField3.setText(name);jTextField3.setEditable(false);
-        jTextField4.setText(type);jTextField4.setEditable(false);
-        jTextField5.setText(s.get(4));jTextField5.setEditable(false);
-    } catch (SQLException ex) {
-        Logger.getLogger(bookdetails.class.getName()).log(Level.SEVERE, null, ex);
-    }
-  
-    
+
     }
 
     private bookdetails() {
@@ -71,8 +84,6 @@ String type;
 
         jLabel1 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         update = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -83,6 +94,8 @@ String type;
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        authorNameCombobox = new javax.swing.JComboBox<>();
+        bookTypeComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,15 +103,6 @@ String type;
         jLabel1.setText("Book details");
 
         jTextField2.setToolTipText("Book details");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-
-        jTextField3.setToolTipText("Author name");
-
-        jTextField4.setToolTipText("Book type");
 
         jTextField5.setToolTipText("Book Quantity");
 
@@ -117,11 +121,6 @@ String type;
         });
 
         jTextField1.setToolTipText("Book name");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
 
         delete.setText("Delete");
         delete.addActionListener(new java.awt.event.ActionListener() {
@@ -166,21 +165,19 @@ String type;
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(103, 103, 103))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(21, 21, 21)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField5)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addGap(236, 236, 236))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(update, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(update, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(authorNameCombobox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bookTypeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(103, 103, 103))))
         );
         layout.setVerticalGroup(
@@ -201,17 +198,17 @@ String type;
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(authorNameCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(bookTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(update)
                     .addComponent(delete))
@@ -222,29 +219,36 @@ String type;
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    searchbook b = new searchbook(s);
+        searchbook b = new searchbook(s);
         b.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
-    updatedetails b = new updatedetails(s);
+        updatedetails b = new updatedetails(s);
+        for(int i =0; i<authorNameCombobox.getItemCount();i++){
+        b.fillComboBox(authorNameCombobox.getItemAt(i), "author name");        
+        }
+        for(int i =0; i<bookTypeComboBox.getItemCount();i++){
+        b.fillComboBox(bookTypeComboBox.getItemAt(i), "book type");        
+        }
+        b.showComboBoxData();
         b.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_updateActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        int result = JOptionPane.showConfirmDialog(this,"Do you want to delete this book?", "Delete book",
-               JOptionPane.YES_NO_OPTION,
-               JOptionPane.QUESTION_MESSAGE);
-            if(result == JOptionPane.YES_OPTION){
+        int result = JOptionPane.showConfirmDialog(this, "Do you want to delete this book?", "Delete book",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+        if (result == JOptionPane.YES_OPTION) {
             try {
                 c = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
                 Statement myS = c.createStatement();
-                String SQL= "delete from book where id = "+s.get(5);
+                String SQL = "delete from book where id = " + s.get(5);
                 myS.execute(SQL);
                 JOptionPane.showMessageDialog(this, "Book deleted",
-                    "Book", JOptionPane.WARNING_MESSAGE  );
+                        "Book", JOptionPane.WARNING_MESSAGE);
                 c.close();
 
                 new book_management().setVisible(true);
@@ -252,22 +256,14 @@ String type;
             } catch (SQLException ex) {
                 Logger.getLogger(bookdetails.class.getName()).log(Level.SEVERE, null, ex);
             }
-            }
+        }
     }//GEN-LAST:event_deleteActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-   
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -277,6 +273,8 @@ String type;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> authorNameCombobox;
+    private javax.swing.JComboBox<String> bookTypeComboBox;
     private javax.swing.JButton delete;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -287,9 +285,28 @@ String type;
     private javax.swing.JLabel jLabel6;
     public javax.swing.JTextField jTextField1;
     public javax.swing.JTextField jTextField2;
-    public javax.swing.JTextField jTextField3;
-    public javax.swing.JTextField jTextField4;
     public javax.swing.JTextField jTextField5;
     private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
+
+    private void fillComboBox() {
+        try {
+            st = c.createStatement();
+            String sql = "Select name from author_name";
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                authorNameCombobox.addItem(rs.getString("name"));
+            }
+            
+            sql = "Select type from booktype";
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                bookTypeComboBox.addItem(rs.getString("type"));
+            }
+            
+
+        } catch (Exception e) {
+            System.out.println("Error in fetching names");
+        }
+    }
 }
