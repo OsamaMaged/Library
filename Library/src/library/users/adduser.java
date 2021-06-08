@@ -168,8 +168,8 @@ public class adduser extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         String name = jTextField1.getText();
-        String email = passwordTextField.getText();
-        String password = emailTextField.getText();
+        String email = emailTextField.getText();               
+        String password = passwordTextField.getText();
         type=jComboBox1.getSelectedIndex();
         
         if(name.isEmpty()||email.isEmpty())
