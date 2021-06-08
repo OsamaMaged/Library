@@ -7,10 +7,12 @@ package library.transactions;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import library.Database_connection;
+import library.user_type;
 
 /**
  *
@@ -31,7 +33,7 @@ public class addTransaction extends javax.swing.JFrame {
      */
     public addTransaction() {
         initComponents();
-        
+
         today = LocalDate.now();
         date = new Date().toString();
         currentDate.setText(date);
@@ -148,18 +150,37 @@ public class addTransaction extends javax.swing.JFrame {
     private void addTransactionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTransactionBtnActionPerformed
         int bookIndex = this.bookName.getSelectedIndex();
         int userIndex = this.userName.getSelectedIndex();
-        
+        String returnDate = null;
         String bookID = this.bookId.get(bookIndex);
         String userID = this.userId.get(userIndex);
-        String returnDate = today.plusWeeks(2).toString(); //To change when add user types
-        
+        String userTypeID = null;
+
         //Insert the new transaction
         try {
 
             st = c.createStatement();
 
+            String sql = "Select userTypeID from user where id='" + userID + "'";
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                userTypeID = rs.getString("userTypeID");
+            }
+
+            switch (userTypeID) {
+                case "0":
+                    returnDate = today.plusWeeks(8).toString();
+                    break;
+                case "1":
+                    returnDate = today.plusWeeks(4).toString();
+                    break;
+                case "2":
+                    returnDate = today.plusWeeks(2).toString();
+                    break;
+
+            }
+
             //insert borrowed book ID into transaction detail
-            String sql = "INSERT INTO transactiondetails" + " VALUES (NULL,'" + bookID + "','"+returnDate+"')";
+            sql = "INSERT INTO transactiondetails" + " VALUES (NULL,'" + bookID + "','" + returnDate + "')";
             st.executeUpdate(sql, st.RETURN_GENERATED_KEYS);
             rs = st.getGeneratedKeys();
             rs.next();
@@ -172,13 +193,11 @@ public class addTransaction extends javax.swing.JFrame {
             st.executeUpdate(sql, st.RETURN_GENERATED_KEYS);
             rs = st.getGeneratedKeys();
             rs.next();
-            
-            int transactionID = rs.getInt(1);
-            
 
+            int transactionID = rs.getInt(1);
 
             //show success message after insertion
-            JOptionPane.showMessageDialog(this, "Transaction added successfully \n Transaction ID: "+transactionID+"\n Return Date: "+returnDate+"",
+            JOptionPane.showMessageDialog(this, "Transaction added successfully \n Transaction ID: " + transactionID + "\n Return Date: " + returnDate + "",
                     "Add Transaction", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "\r Transaction not added \n Make sure that book & user id already exist in the DB",
@@ -198,7 +217,7 @@ public class addTransaction extends javax.swing.JFrame {
             String userName;
             bookId = new ArrayList<>();
             userId = new ArrayList<>();
-            
+
             String sql = "SELECT * from book";
             rs = st.executeQuery(sql);
 
@@ -207,7 +226,7 @@ public class addTransaction extends javax.swing.JFrame {
                 this.bookName.addItem(bookName);
                 bookId.add(rs.getString("id")); //put all id in array to be fetched later without needing to make another query
             }
-            
+
             sql = "SELECT * from user";
             rs = st.executeQuery(sql);
             while (rs.next()) {
