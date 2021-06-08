@@ -17,15 +17,26 @@ public class book {
     String authorName;
     String typeID;
     String typeName;
-    int stock;
+    String stock;
 
-    public book(String id, String name, String description, String author, String type) {
+    public book(String id, String name, String description, String authorID, String typeID) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.authorID = author;
-        this.typeID = type;
+        this.authorID = authorID;
+        this.typeID = typeID;
     }
+
+    public book(String id, String name, String description, String authorID, String typeID, String stock) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.authorID = authorID;
+        this.typeID = typeID;
+        this.stock = stock;
+    }
+
+    
 
     public String getId() {
         return id;
@@ -47,7 +58,7 @@ public class book {
         return typeID;
     }
 
-    public int getStock() {
+    public String getStock() {
         return stock;
     }
 

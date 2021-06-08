@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import library.Database_connection;
 import library.Main_frame;
 import library.books.bookdetails;
 import static library.Main_frame.c;
@@ -25,30 +26,33 @@ import static library.Main_frame.c;
 public class user_details extends javax.swing.JFrame {
 
     ArrayList<String> s = new ArrayList<String>();
+    Connection c;
+    ResultSet rs = null;
+    Statement st = null;
 
     /**
      * Creates new form user_details
      */
     public user_details(ArrayList<String> m) {
+        initComponents();
+        c = Database_connection.connect();
+        fillComboBox();
         try {
-            initComponents();
+
             s.addAll(m);
-            Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-            Statement a = c.createStatement();
-            ResultSet f = a.executeQuery("SELECT * FROM usertype WHERE TypeId = " + s.get(2));
-            while (f.next()) {
-                System.out.println("type = " + f.getString("type"));
-                s.add(f.getString("type"));
+            st = c.createStatement();
+            rs = st.executeQuery("SELECT * FROM usertype WHERE TypeId = " + s.get(2));
+            while (rs.next()) {
+                s.add(rs.getString("type"));
             }
-//            System.out.println(myRs.getString("TypeId")+" "+myRs.getString("type") );
-            jTextField1.setText(s.get(0));
-            jTextField1.setEditable(false);
-            jTextField2.setText(s.get(1));
-            jTextField2.setEditable(false);
-            jTextField3.setText(s.get(5));
-            jTextField3.setEditable(false);
-            jTextField4.setText(s.get(4));
-            jTextField4.setEditable(false);
+            nameTextField.setText(s.get(0));
+            nameTextField.setEditable(false);
+            emailTextField.setText(s.get(1));
+            emailTextField.setEditable(false);
+            userTypeComboBox.setSelectedItem(s.get(5));
+            userTypeComboBox.setEnabled(false);
+            passwordTextField.setText(s.get(4));
+            passwordTextField.setEditable(false);
 
         } catch (SQLException ex) {
             Logger.getLogger(user_details.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,15 +78,15 @@ public class user_details extends javax.swing.JFrame {
         delete = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        emailTextField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         update = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        nameTextField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        passwordTextField = new javax.swing.JTextField();
+        userTypeComboBox = new javax.swing.JComboBox<>();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -101,19 +105,13 @@ public class user_details extends javax.swing.JFrame {
 
         jLabel3.setText("Email");
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
         jLabel1.setText("User details");
 
-        jTextField2.setToolTipText("Book details");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        emailTextField.setToolTipText("Book details");
+        emailTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                emailTextFieldActionPerformed(evt);
             }
         });
 
@@ -133,10 +131,10 @@ public class user_details extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.setToolTipText("Book name");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        nameTextField.setToolTipText("Book name");
+        nameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                nameTextFieldActionPerformed(evt);
             }
         });
 
@@ -156,23 +154,24 @@ public class user_details extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField4))
+                        .addComponent(passwordTextField))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 15, Short.MAX_VALUE)
+                        .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(jLabel6)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabel3)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(jLabel6)
+                                    .addGap(17, 17, 17)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(userTypeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(emailTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(update, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -190,22 +189,22 @@ public class user_details extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE))
+                    .addComponent(emailTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(userTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(update)
                     .addComponent(delete))
@@ -227,13 +226,11 @@ public class user_details extends javax.swing.JFrame {
                 myS.execute(SQL);
                 JOptionPane.showMessageDialog(this, "User Deleted",
                         "User", JOptionPane.INFORMATION_MESSAGE);
-                Main_frame f = new Main_frame();
-                f.setVisible(true);
-                c.close();
-
+                new users_management().setVisible(true);
                 this.dispose();
             } catch (SQLException ex) {
-                Logger.getLogger(bookdetails.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "this user has dependencies\n can't delete user.",
+                        "User", JOptionPane.INFORMATION_MESSAGE);
             }
         } else if (result == JOptionPane.NO_OPTION) {
 
@@ -241,13 +238,9 @@ public class user_details extends javax.swing.JFrame {
 
     }//GEN-LAST:event_deleteActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void emailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_emailTextFieldActionPerformed
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
         update_user b = new update_user(s);
@@ -261,9 +254,9 @@ public class user_details extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextFieldActionPerformed
 
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_nameTextFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -302,6 +295,7 @@ public class user_details extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton delete;
+    public javax.swing.JTextField emailTextField;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -310,10 +304,24 @@ public class user_details extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
-    public javax.swing.JTextField jTextField1;
-    public javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    public javax.swing.JTextField nameTextField;
+    private javax.swing.JTextField passwordTextField;
     private javax.swing.JButton update;
+    private javax.swing.JComboBox<String> userTypeComboBox;
     // End of variables declaration//GEN-END:variables
+
+    private void fillComboBox() {
+        try {
+            st = c.createStatement();
+            String sql = "Select type from usertype";
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                userTypeComboBox.addItem(rs.getString("type"));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error in fetching user types");
+        }
+    }
+
 }

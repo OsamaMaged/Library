@@ -16,21 +16,28 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import library.Database_connection;
 import library.Main_frame;
 import static library.Main_frame.c;
-
 
 /**
  *
  * @author Marwa Elgheitani
  */
 public class users_management extends javax.swing.JFrame {
-ArrayList<String>m=new ArrayList<String>();
+
+    ArrayList<String> m = new ArrayList<String>();
+    ArrayList<user> users = new ArrayList<>();
+    Connection c;
+    Statement st;
+    ResultSet rs;
+
     /**
      * Creates new form users_main
      */
     public users_management() {
         initComponents();
+        c = Database_connection.connect();
     }
 
     /**
@@ -43,21 +50,22 @@ ArrayList<String>m=new ArrayList<String>();
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        addUserBtn = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        searchUserBtn = new javax.swing.JButton();
+        searchUserTextField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        viewAllUsersBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
         jLabel1.setText("User Management");
 
-        jButton1.setText("Add User");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        addUserBtn.setText("Add User");
+        addUserBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addUserBtnActionPerformed(evt);
             }
         });
 
@@ -68,22 +76,24 @@ ArrayList<String>m=new ArrayList<String>();
             }
         });
 
-        jButton2.setText("Search User");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        searchUserBtn.setText("Search User");
+        searchUserBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                searchUserBtnActionPerformed(evt);
             }
         });
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jTextField1.setToolTipText("");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
+        searchUserTextField.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        searchUserTextField.setToolTipText("");
 
         jLabel2.setText("Search by User Name");
+
+        viewAllUsersBtn.setText("View All Users");
+        viewAllUsersBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewAllUsersBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,11 +112,12 @@ ArrayList<String>m=new ArrayList<String>();
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(addUserBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(searchUserTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(searchUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(viewAllUsersBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(26, 26, 26))))
         );
         layout.setVerticalGroup(
@@ -118,24 +129,26 @@ ArrayList<String>m=new ArrayList<String>();
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton3))
                 .addGap(34, 34, 34)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(69, 69, 69)
+                .addComponent(addUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
+                .addComponent(viewAllUsersBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
-                    .addComponent(jTextField1))
+                    .addComponent(searchUserBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                    .addComponent(searchUserTextField))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void addUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserBtnActionPerformed
         adduser b = new adduser();
         b.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_addUserBtnActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
@@ -144,69 +157,81 @@ ArrayList<String>m=new ArrayList<String>();
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        m=new ArrayList<String>();
-        boolean flag=true;
+    private void searchUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchUserBtnActionPerformed
+        m = new ArrayList<String>();
+        ArrayList<user> users = new ArrayList<>();
+        String Result = searchUserTextField.getText();
+        if (Result.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "user name field can't be empty",
+                    "User", JOptionPane.ERROR_MESSAGE);
+            return;
+
+        }
         try {
-            String Result =jTextField1.getText();
-            if(!Result.isEmpty())
-            {
-                c = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-                Statement myS = c.createStatement();
-                ResultSet myR = myS.executeQuery("select * from user where name like '"+Result+"'");
-                while (myR.next()) {
-                    flag=false;
-                    System.out.println(myR.getString("id")+ " , "+myR.getString("name"));
 
-                    m.add(0,myR.getString("name"));
-                    m.add(1,myR.getString("email"));
-                    m.add(2,myR.getString("userTypeID"));
-                    m.add(3,myR.getString("id"));
-                    m.add(4,myR.getString("password"));
-                    System.out.println(m.get(0)+" "+m.get(1)+" "+m.get(2)+" "+m.get(3)+" "+m.get(4));
-
-
-                }
-       //         ResultSet myRs = mySt.executeQuery("select * from userType where TypeID ="+m.get(2));
-     //        System.out.println(myRs.getString(0)+" "+myRs.getString(1) );
-  //                 m.add(4,myRs.getString("type"));
-    //                System.out.println(m.get(0)+" "+m.get(1)+" "+m.get(2)+" "+m.get(3)+" "+m.get(4));
-                
-                c.close();
-                if(flag)
-                {JOptionPane.showMessageDialog(this, "This user doesn't exist",
-                    "User", JOptionPane.WARNING_MESSAGE  );}
-            else{
-                new user_details(m).setVisible(true);
-                this.dispose();
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery("select * from user where lower(name) like '%" + Result + "%'");
+            
+            //check if there are no results
+            if (!rs.isBeforeFirst()) {
+                JOptionPane.showMessageDialog(this, "No results found",
+                        "User", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        }else  JOptionPane.showMessageDialog(this, "Enter the user name",
-            "User", JOptionPane.WARNING_MESSAGE  );
+            
+             while (rs.next()) {
+                users.add(new user(rs.getString("id"), rs.getString("name"), rs.getString("email"), rs.getString("password"), rs.getString("userTypeID")));
+            }
+            for (int i = 0; i < users.size(); i++) {
+                String sql = "Select type from usertype where TypeId='" + users.get(i).getUserTypeID() + "'";
+                rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    users.get(i).setUserTypeName(rs.getString("type"));
+                }
+            }
+            
+            users_table usersTable = new users_table();
+            usersTable.fillUserTable(users);
+            usersTable.setVisible(true);
+            this.dispose();
+            
+
         } catch (Exception ex) {
             Logger.getLogger(users_management.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Error",
-                "User", JOptionPane.WARNING_MESSAGE  );
-
-            try {
-                c.close();
-            } catch (SQLException ex1) {
-                Logger.getLogger(users_management.class.getName()).log(Level.SEVERE, null, ex1);
-            }
+                    "User", JOptionPane.WARNING_MESSAGE);
         }
 
-        //create statement
+    }//GEN-LAST:event_searchUserBtnActionPerformed
 
-        //create statement
+    private void viewAllUsersBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAllUsersBtnActionPerformed
+        try {
+            String sql = "Select * from user";
+            st = c.createStatement();
+            rs = st.executeQuery(sql);
+            if (!rs.isBeforeFirst()) {
+                JOptionPane.showMessageDialog(this, "No users to show",
+                        "User", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            while (rs.next()) {
+                users.add(new user(rs.getString("id"), rs.getString("name"), rs.getString("email"), rs.getString("password"), rs.getString("userTypeID")));
+            }
+            for (int i = 0; i < users.size(); i++) {
+                sql = "Select type from usertype where TypeId='" + users.get(i).getUserTypeID() + "'";
+                rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    users.get(i).setUserTypeName(rs.getString("type"));
+                }
+            }
+            users_table usersTable = new users_table();
+            usersTable.fillUserTable(users);
+            usersTable.setVisible(true);
+            this.dispose();
 
-        //create statement
-
-        //create statement
-
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_viewAllUsersBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -245,11 +270,12 @@ ArrayList<String>m=new ArrayList<String>();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton addUserBtn;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton searchUserBtn;
+    private javax.swing.JTextField searchUserTextField;
+    private javax.swing.JButton viewAllUsersBtn;
     // End of variables declaration//GEN-END:variables
 }

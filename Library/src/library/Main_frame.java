@@ -14,9 +14,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import library.books.book;
-import library.books.view_all_books;
+import library.books.books_table;
 import library.transactions.Transaction;
-import library.transactions.user_transaction_history;
+import library.transactions.transactions_table;
 
 /**
  *
@@ -201,7 +201,7 @@ public class Main_frame extends javax.swing.JFrame {
                 }
             }
 
-            view_all_books viewAllBooks = new view_all_books();
+            books_table viewAllBooks = new books_table();
             viewAllBooks.fillBookTable(books);
             viewAllBooks.setVisible(true);
             this.dispose();
@@ -247,7 +247,7 @@ public class Main_frame extends javax.swing.JFrame {
                 }
             }
 
-            user_transaction_history userTransactionHistory = new user_transaction_history();
+            transactions_table userTransactionHistory = new transactions_table();
             userTransactionHistory.fillTransactinHistoryTable(transactions);
             userTransactionHistory.setVisible(true);
             this.dispose();

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import library.Database_connection;
 import library.Main_frame;
 import static library.Main_frame.c;
 
@@ -24,6 +25,9 @@ import static library.Main_frame.c;
 public class book_management extends javax.swing.JFrame {
 
     public ArrayList<String> m;
+    Connection c;
+    Statement st;
+    ResultSet rs;
 
     /**
      * Creates new form book_management
@@ -31,6 +35,7 @@ public class book_management extends javax.swing.JFrame {
 //public book_management(ArrayList<String> s) {s=this.m;}
     public book_management() {
         initComponents();
+        c = Database_connection.connect();
     }
 
     /**
@@ -43,36 +48,36 @@ public class book_management extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        addBookBtn = new javax.swing.JButton();
+        searchBookBtn = new javax.swing.JButton();
+        searchBookTextField = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        addAuthorBtn = new javax.swing.JButton();
+        addBookTypeBtn = new javax.swing.JButton();
+        getAllBooksBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
         jLabel1.setText("Book Management");
 
-        jButton1.setText("Add book");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        addBookBtn.setText("Add book");
+        addBookBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addBookBtnActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Search book");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        searchBookBtn.setText("Search book");
+        searchBookBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                searchBookBtnActionPerformed(evt);
             }
         });
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jTextField1.setToolTipText("Enter book name");
+        searchBookTextField.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        searchBookTextField.setToolTipText("Enter book name");
 
         jButton3.setText("Back");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -83,24 +88,24 @@ public class book_management extends javax.swing.JFrame {
 
         jLabel2.setText("Search by Book Name");
 
-        jButton4.setText("Add Book Author");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        addAuthorBtn.setText("Add Book Author");
+        addAuthorBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                addAuthorBtnActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Add Book Type");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        addBookTypeBtn.setText("Add Book Type");
+        addBookTypeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                addBookTypeBtnActionPerformed(evt);
             }
         });
 
-        jButton6.setText("Get all books");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        getAllBooksBtn.setText("Get all books");
+        getAllBooksBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                getAllBooksBtnActionPerformed(evt);
             }
         });
 
@@ -109,25 +114,27 @@ public class book_management extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel2)
-                .addGap(319, 319, 319))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton3)
                         .addGap(60, 60, 60)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 83, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
-                            .addComponent(jTextField1))
-                        .addGap(29, 29, 29)
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(addAuthorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(searchBookTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(addBookTypeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                            .addComponent(searchBookBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(addBookBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(getAllBooksBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -139,71 +146,101 @@ public class book_management extends javax.swing.JFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(addBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(getAllBooksBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addAuthorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addBookTypeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchBookTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchBookBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void addBookBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBookBtnActionPerformed
         addbook b = new addbook();
         b.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_addBookBtnActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void searchBookBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBookBtnActionPerformed
         m = new ArrayList<String>();
-        boolean flag = true;
+        ArrayList<book> books = new ArrayList<>();
         try {
-            String Result = jTextField1.getText();
+            String Result = searchBookTextField.getText();
             if (Result.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "book name field can't be empty",
                         "Book", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-            Statement st = c.createStatement();
-            ResultSet r = st.executeQuery("select * from book where lower(name) like '%" + Result + "%'");
-            String authorID = null;
-            String bookTypeID = null;
-            while (r.next()) {
-                m.add(0, r.getString("name"));
-                m.add(1, r.getString("description"));
-                authorID = r.getString("author");
-                bookTypeID = r.getString("type");
-                m.add(2, r.getString("author"));
-                m.add(3, r.getString("type"));
-                m.add(4, r.getString("stock"));
-                m.add(5, r.getString("id"));
+            st = c.createStatement();
+            rs = st.executeQuery("select * from book where lower(name) like '%" + Result + "%'");
+
+            //check if there are no results
+            if (!rs.isBeforeFirst()) {
+                JOptionPane.showMessageDialog(this, "No results found",
+                        "Book", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
-            String sql = "Select name from author_name where id ='" + authorID + "'";
-            r = st.executeQuery(sql);
-            while (r.next()) {
-                m.add(6, r.getString("name"));
+            while (rs.next()) {
+                books.add(new book(rs.getString("id"), rs.getString("name"), rs.getString("description"), rs.getString("author"), rs.getString("type"),rs.getString("stock")));
             }
-            sql = "Select type from booktype where id ='" + bookTypeID + "'";
-            r = st.executeQuery(sql);
-            while (r.next()) {
-                m.add(7, r.getString("type"));
-            }
+            for (int i = 0; i < books.size(); i++) {
+                book book = books.get(i);
+                String sql = "Select name from author_name where id='" + book.getAuthorID() + "'";
+                rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    book.setAuthorName(rs.getString("name"));
+                }
 
-            searchbook b = new searchbook(m);
-            b.setVisible(true);
+                sql = "Select type from booktype where id='" + book.getTypeID() + "'";
+                rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    book.setTypeName(rs.getString("type"));
+                }
+            }
+            
+            books_table viewAllBooks = new books_table();
+            viewAllBooks.fillBookTable(books);
+            viewAllBooks.setVisible(true);
             this.dispose();
+
+//            String authorID = null;
+//            String bookTypeID = null;
+//            while (r.next()) {
+//                m.add(0, r.getString("name"));
+//                m.add(1, r.getString("description"));
+//                authorID = r.getString("author");
+//                bookTypeID = r.getString("type");
+//                m.add(2, r.getString("author"));
+//                m.add(3, r.getString("type"));
+//                m.add(4, r.getString("stock"));
+//                m.add(5, r.getString("id"));
+//            }
+//
+//            String sql = "Select name from author_name where id ='" + authorID + "'";
+//            r = st.executeQuery(sql);
+//            while (r.next()) {
+//                m.add(6, r.getString("name"));
+//            }
+//            sql = "Select type from booktype where id ='" + bookTypeID + "'";
+//            r = st.executeQuery(sql);
+//            while (r.next()) {
+//                m.add(7, r.getString("type"));
+//            }
+//
+//            searchbook b = new searchbook(m);
+//            b.setVisible(true);
+//            this.dispose();
 
         } catch (Exception ex) {
             Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex);
@@ -220,7 +257,7 @@ public class book_management extends javax.swing.JFrame {
         //create statement 
         //create statement 
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_searchBookBtnActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
@@ -229,7 +266,7 @@ public class book_management extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void addAuthorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addAuthorBtnActionPerformed
         try {
             String author;
             author = JOptionPane.showInputDialog("What is the author name? ");
@@ -252,9 +289,9 @@ public class book_management extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex);
         }
-           }//GEN-LAST:event_jButton4ActionPerformed
+           }//GEN-LAST:event_addAuthorBtnActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void addBookTypeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBookTypeBtnActionPerformed
         try {
             String type;
             type = JOptionPane.showInputDialog("What is the book type? ");
@@ -277,9 +314,9 @@ public class book_management extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_addBookTypeBtnActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void getAllBooksBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllBooksBtnActionPerformed
         try {
             String[] names = {};
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
@@ -338,7 +375,7 @@ public class book_management extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(book_management.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_getAllBooksBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -376,14 +413,14 @@ public class book_management extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton addAuthorBtn;
+    private javax.swing.JButton addBookBtn;
+    private javax.swing.JButton addBookTypeBtn;
+    private javax.swing.JButton getAllBooksBtn;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton searchBookBtn;
+    private javax.swing.JTextField searchBookTextField;
     // End of variables declaration//GEN-END:variables
 }

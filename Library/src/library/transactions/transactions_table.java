@@ -3,22 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package library.books;
+package library.transactions;
 
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import library.Main_frame;
+import library.books.book;
 
 /**
  *
  * @author Ashrakat
  */
-public class view_all_books extends javax.swing.JFrame {
+public class transactions_table extends javax.swing.JFrame {
 
     /**
-     * Creates new form view_all_books
+     * Creates new form user_transaction_history
      */
-    public view_all_books() {
+    public transactions_table() {
         initComponents();
     }
 
@@ -32,24 +33,24 @@ public class view_all_books extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        booksTable = new javax.swing.JTable();
+        transactionHistoryTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        booksTable.setModel(new javax.swing.table.DefaultTableModel(
+        transactionHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "id", "name", "description", "author", "type"
+                "transaction ID", "book name", "borrow date", "return date"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -60,7 +61,7 @@ public class view_all_books extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(booksTable);
+        jScrollPane1.setViewportView(transactionHistoryTable);
 
         jButton1.setText("back");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -83,7 +84,7 @@ public class view_all_books extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -93,23 +94,6 @@ public class view_all_books extends javax.swing.JFrame {
         new Main_frame().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    public void fillBookTable(ArrayList<book> books) {
-
-        //put results in a table
-        DefaultTableModel model = (DefaultTableModel) booksTable.getModel();
-        Object[] row = new Object[5];
-        for (int i = 0; i < books.size(); i++) {
-            book book = books.get(i);
-            row[0] = book.getId();
-            row[1] = book.getName();
-            row[2] = book.getDescription();
-            row[3] = book.getAuthorName();
-            row[4] = book.getTypeName();
-
-            model.addRow(row);
-        }
-    }
 
     /**
      * @param args the command line arguments
@@ -128,27 +112,43 @@ public class view_all_books extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(view_all_books.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(transactions_table.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(view_all_books.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(transactions_table.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(view_all_books.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(transactions_table.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(view_all_books.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(transactions_table.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new view_all_books().setVisible(true);
+                new transactions_table().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable booksTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable transactionHistoryTable;
     // End of variables declaration//GEN-END:variables
+
+    public void fillTransactinHistoryTable(ArrayList<Transaction> transactions) {
+         //put results in a table
+        DefaultTableModel model = (DefaultTableModel) transactionHistoryTable.getModel();
+        Object[] row = new Object[5];
+        for (int i = 0; i < transactions.size(); i++) {
+            Transaction transaction = transactions.get(i);
+            row[0] = transaction.getId();
+            row[1] =transaction.getBookName();
+            row[2] = transaction.getDate();
+            row[3] = transaction.getReturnDate();
+
+            model.addRow(row);
+        }
+    }
 }

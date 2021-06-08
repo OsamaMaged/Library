@@ -219,8 +219,7 @@ public class bookdetails extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        searchbook b = new searchbook(s);
-        b.setVisible(true);
+        new book_management().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -248,13 +247,14 @@ public class bookdetails extends javax.swing.JFrame {
                 String SQL = "delete from book where id = " + s.get(5);
                 myS.execute(SQL);
                 JOptionPane.showMessageDialog(this, "Book deleted",
-                        "Book", JOptionPane.WARNING_MESSAGE);
+                        "Book", JOptionPane.INFORMATION_MESSAGE);
                 c.close();
 
                 new book_management().setVisible(true);
                 this.dispose();
             } catch (SQLException ex) {
-                Logger.getLogger(bookdetails.class.getName()).log(Level.SEVERE, null, ex);
+               JOptionPane.showMessageDialog(this, "This book has dependencies, can't be deleted",
+                        "Book", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_deleteActionPerformed

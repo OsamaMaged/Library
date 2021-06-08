@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package library.users;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -22,16 +23,20 @@ import library.books.book_management;
  * @author Marwa Elgheitani
  */
 public class update_user extends javax.swing.JFrame {
-int type;
-ArrayList<String>s=new ArrayList<String>();
+
+    int type;
+    ArrayList<String> s = new ArrayList<String>();
+
     /**
      * Creates new form update_user
      */
-    public update_user(ArrayList<String>m) {
+    public update_user(ArrayList<String> m) {
         initComponents();
         this.s.addAll(m);
-        jTextField1.setText(s.get(0));
-        jTextField2.setText(s.get(1));
+        nameTextField.setText(s.get(0));
+        emailTextField.setText(s.get(1));
+        passwordTextField.setText(s.get(4));
+        userTypeComboBox.setSelectedItem(s.get(5));
     }
 
     private update_user() {
@@ -48,15 +53,17 @@ ArrayList<String>s=new ArrayList<String>();
     private void initComponents() {
 
         jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        nameTextField = new javax.swing.JTextField();
         cancel = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        emailTextField = new javax.swing.JTextField();
         save = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        userTypeComboBox = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        passwordTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,7 +74,7 @@ ArrayList<String>s=new ArrayList<String>();
             }
         });
 
-        jTextField1.setToolTipText("Book name");
+        nameTextField.setToolTipText("Book name");
 
         cancel.setText("cancel");
         cancel.addActionListener(new java.awt.event.ActionListener() {
@@ -79,7 +86,7 @@ ArrayList<String>s=new ArrayList<String>();
         jLabel1.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
         jLabel1.setText("User details");
 
-        jTextField2.setToolTipText("Book details");
+        emailTextField.setToolTipText("Book details");
 
         save.setText("Save");
         save.addActionListener(new java.awt.event.ActionListener() {
@@ -94,23 +101,22 @@ ArrayList<String>s=new ArrayList<String>();
 
         jLabel4.setText("Type");
 
-        jComboBox1.setMaximumRowCount(3);
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Librarian", "User" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        userTypeComboBox.setMaximumRowCount(3);
+        userTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Librarian", "User" }));
+        userTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                userTypeComboBoxActionPerformed(evt);
             }
         });
+
+        jLabel5.setText("Password");
+
+        passwordTextField.setToolTipText("Book details");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jButton2)
-                .addGap(57, 57, 57)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,14 +125,26 @@ ArrayList<String>s=new ArrayList<String>();
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField2)
-                    .addComponent(jTextField1)
+                    .addComponent(emailTextField)
+                    .addComponent(nameTextField)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(save, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cancel, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(userTypeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(103, 103, 103))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addGap(57, 57, 57)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(passwordTextField)))
+                .addGap(106, 106, 106))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,19 +154,23 @@ ArrayList<String>s=new ArrayList<String>();
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(nameTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(31, 31, 31)
+                    .addComponent(jLabel3)
+                    .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43)
+                    .addComponent(userTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(save)
                     .addComponent(cancel))
@@ -159,8 +181,7 @@ ArrayList<String>s=new ArrayList<String>();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        book_management b = new book_management();
-        b.setVisible(true);
+        new Main_frame().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -169,39 +190,35 @@ ArrayList<String>s=new ArrayList<String>();
     }//GEN-LAST:event_cancelActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
-        String name = jTextField1.getText();
-        String email = jTextField2.getText();
-        type=jComboBox1.getSelectedIndex();
-        
-        if(name.isEmpty()||email.isEmpty())
-        {
+        String name = nameTextField.getText();
+        String email = emailTextField.getText();
+        String password = passwordTextField.getText();
+        type = userTypeComboBox.getSelectedIndex();
+
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter all values",
-                "User", JOptionPane.WARNING_MESSAGE  );
-        }else{
-            try {
-                Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
-                Statement myStat = Conn.createStatement();
-                myStat.execute("update user"+" set name ='"+name+"',email = '"+ email+"',"
-                    + "userTypeID = "+type+" where id = "+s.get(3));
-                JOptionPane.showMessageDialog(this, "User Updated",
-                               "User", JOptionPane.INFORMATION_MESSAGE  );
-                Main_frame f=new Main_frame();
-                f.setVisible(true);
-            this.dispose();
-                Conn.close();
-            } catch (Exception ex) {
-                Logger.getLogger(addbook.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(this, "Error",
-                    "User", JOptionPane.WARNING_MESSAGE  );
-            }
-           
+                    "User", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+        try {
+            Connection Conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "root");
+            Statement myStat = Conn.createStatement();
+            myStat.execute("update user" + " set name ='" + name + "',email = '" + email + "',password = '" + password + "'"
+                    + ",userTypeID = " + type + " where id = " + s.get(3));
+            JOptionPane.showMessageDialog(this, "User Updated",
+                    "User", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception ex) {
+           JOptionPane.showMessageDialog(this, "Update failed",
+                    "User", JOptionPane.ERROR_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_saveActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-         type = jComboBox1.getSelectedIndex();
+    private void userTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userTypeComboBoxActionPerformed
+        type = userTypeComboBox.getSelectedIndex();
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_userTypeComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -240,14 +257,16 @@ ArrayList<String>s=new ArrayList<String>();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancel;
+    private javax.swing.JTextField emailTextField;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JTextField nameTextField;
+    private javax.swing.JTextField passwordTextField;
     private javax.swing.JButton save;
+    private javax.swing.JComboBox<String> userTypeComboBox;
     // End of variables declaration//GEN-END:variables
 }
